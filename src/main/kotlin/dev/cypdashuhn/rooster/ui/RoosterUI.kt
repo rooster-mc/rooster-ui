@@ -34,7 +34,7 @@ object RoosterUI {
     ) {
         this.plugin = plugin
         this.interfaces.addAll(interfaces)
-        if (services != null) this.services = services
+        if (services != null) this.services.byOther(services)
 
         if (!this.services.hasService(InterfaceContextProvider::class)) {
             this.services.set<InterfaceContextProvider>(YmlInterfaceContextProvider())

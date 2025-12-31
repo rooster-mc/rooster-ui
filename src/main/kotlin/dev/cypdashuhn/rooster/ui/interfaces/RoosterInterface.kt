@@ -5,6 +5,7 @@ import dev.cypdashuhn.rooster.ui.items.InterfaceItem
 import dev.cypdashuhn.rooster.ui.items.InterfaceItemList
 import dev.cypdashuhn.rooster.ui.items.targetsNullableSlot
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryCloseEvent
@@ -36,7 +37,7 @@ abstract class RoosterInterface<T : Context>(
 
         // Inventory-Creator
         var inventorySize: Int = 9 * 6
-        var inventoryTitle: String? = null
+        var inventoryTitle: ((Player, T) -> TextComponent)? = null
     }
 
     val items by lazy { getInterfaceItems() }
@@ -46,7 +47,7 @@ abstract class RoosterInterface<T : Context>(
         return Bukkit.createInventory(
             player,
             options.inventorySize,
-            Component.text(options.inventoryTitle ?: interfaceName)
+            options.inventoryTitle?.invoke(player, context) ?: Component.text(interfaceName)
         )
     }
 

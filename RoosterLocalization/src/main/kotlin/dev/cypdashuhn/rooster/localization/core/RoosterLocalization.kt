@@ -25,7 +25,7 @@ object RoosterLocalization {
         cache: RoosterCache<String, Any>? = null
     ) {
         this.plugin = plugin
-        if (services != null) this.services = services
+        if (services != null) this.services.byOther(services)
         if (!this.services.hasService(LocaleProvider::class)) {
             this.services.set<LocaleProvider>(YmlLocaleProvider(mapOf("en_US" to Locale.ENGLISH), "en_US"))
         }

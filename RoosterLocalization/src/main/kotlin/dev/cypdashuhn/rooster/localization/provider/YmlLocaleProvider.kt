@@ -14,18 +14,18 @@ class YmlLocaleProvider(
     private val generalKey = "GlobalLanguage"
 
     override fun playerLanguage(player: Player): Language? {
-        val map = config.getMapList(playerKey) as MutableMap<String, String>
-        return map[player.uuid()]
+        val section = config.getConfigurationSection(playerKey)
+        return section?.getString(player.uuid())
     }
 
     override fun changeLanguage(player: Player, language: Language) {
-        val map = config.getMapList(playerKey) as MutableMap<String, String>
-        map[player.uuid()] = language
+        val section = config.getConfigurationSection(playerKey) ?: config.createSection(playerKey)
+        section.set(player.uuid(), language)
         saveConfig()
     }
 
     override fun getGlobalLanguage(): Language {
-        config.getString(generalKey)?.let { return it } ?: return defaultLocale
+        return config.getString(generalKey) ?: defaultLocale
     }
 
     override fun changeGlobalLanguage(language: Language) {

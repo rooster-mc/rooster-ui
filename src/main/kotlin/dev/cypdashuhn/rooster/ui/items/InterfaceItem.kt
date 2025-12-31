@@ -4,6 +4,7 @@ import dev.cypdashuhn.rooster.common.util.createItem
 import dev.cypdashuhn.rooster.ui.interfaces.ClickInfo
 import dev.cypdashuhn.rooster.ui.interfaces.Context
 import dev.cypdashuhn.rooster.ui.interfaces.InterfaceInfo
+import dev.cypdashuhn.rooster.ui.interfaces.RoosterInterface
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import kotlin.reflect.KClass
@@ -26,12 +27,27 @@ class InterfaceItem<T : Context> {
 
     internal var onClick: (ClickInfo<T>.() -> Unit)? = null
     private var contextModifier: (ClickInfo<T>.() -> Unit)? = null
+    private var routeToInterface: (ClickInfo<T>.() -> Unit)? = null
     internal val onClickMerged: (ClickInfo<T>.() -> Unit)
         get() = {
             onClick?.invoke(this)
             contextModifier?.invoke(this)
-
+            routeToInterface?.invoke(this)
         }
+
+    val state = State()
+
+    inner class State {
+        val slots get() = this@InterfaceItem.slots
+        val condition get() = this@InterfaceItem.condition
+        val priority get() = this@InterfaceItem.priority
+        val staticPriority get() = this@InterfaceItem.staticPriority
+        val displayItem get() = this@InterfaceItem.displayItem
+        val onClick get() = this@InterfaceItem.onClick
+        val contextModifier get() = this@InterfaceItem.contextModifier
+        val routeToInterface get() = this@InterfaceItem.routeToInterface
+        val onClickMerged get() = this@InterfaceItem.onClickMerged
+    }
 
     internal fun check(info: InterfaceInfo<T>): Boolean {
         return slots.targetsSlot(info.slot) && condition.flattend(info)
@@ -81,6 +97,19 @@ class InterfaceItem<T : Context> {
         else this.contextModifier = {
             action()
             clickedInterface.openInventory(click.player, context)
+        }
+    }
+
+    fun <E : Context> routeTo(targetInterface: RoosterInterface<E>, context: E? = null) = copy {
+        this.routeToInterface = {
+            if (context == null) targetInterface.openInventory(click.player)
+            else targetInterface.openInventory(click.player, context)
+        }
+    }
+
+    fun <E : Context> routeTo(targetInterfaceItem: RoosterInterface<E>, getContext: (ClickInfo<T>.() -> E)) = copy {
+        this.routeToInterface = {
+            targetInterfaceItem.openInventory(click.player, getContext())
         }
     }
 

@@ -55,8 +55,11 @@ interface YmlOperations {
     }
 }
 
-open class YmlShell(fileName: String, directory: String = "", baseDirectory: String = RoosterUI.pluginFolder.path) :
-    YmlOperations {
+open class YmlShell(
+    fileName: String,
+    directory: String = "",
+    baseDirectory: String = RoosterUI.pluginFolder.path
+) : YmlOperations {
     override val file = File(baseDirectory, if (directory.isNotEmpty()) "$directory/$fileName" else fileName)
     override val config: FileConfiguration by lazy { YamlConfiguration.loadConfiguration(file) }
 }

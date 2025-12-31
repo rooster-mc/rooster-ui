@@ -11,6 +11,10 @@ interface RoosterService {
 class RoosterServices {
     private val services: MutableMap<KClass<out RoosterService>, RoosterService> = mutableMapOf()
 
+    fun byOther(service: RoosterServices) {
+        services.putAll(service.services)
+    }
+
     fun <T : RoosterService> set(instance: T): T {
         services[instance.targetClass()] = instance
         return instance
