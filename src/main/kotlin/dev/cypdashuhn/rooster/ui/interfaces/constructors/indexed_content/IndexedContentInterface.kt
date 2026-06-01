@@ -9,8 +9,9 @@ import org.bukkit.inventory.ItemStack
 
 abstract class IndexedContentInterface<ContextType : Context, IdType : Any, DataType : Any>(
     interfaceName: InterfaceName,
+    contextHandler: ContextHandler<ContextType>,
     indexedContentOptions: IndexedContentOptions<ContextType> = IndexedContentOptions()
-) : RoosterInterface<ContextType>(interfaceName, indexedContentOptions) {
+) : RoosterInterface<ContextType>(interfaceName, contextHandler, indexedContentOptions) {
     open class IndexedContentOptions<T : Context> : RoosterInterfaceOptions<T>() {
         var contentArea: Pair<Pair<Int, Int>, Pair<Int, Int>> = (0 to 0) to (8 to 5)
 

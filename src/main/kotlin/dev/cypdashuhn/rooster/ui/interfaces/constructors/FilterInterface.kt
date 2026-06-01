@@ -1,6 +1,7 @@
 package dev.cypdashuhn.rooster.ui.interfaces.constructors
 
 import dev.cypdashuhn.rooster.ui.interfaces.Context
+import dev.cypdashuhn.rooster.ui.interfaces.ContextHandler
 import dev.cypdashuhn.rooster.ui.interfaces.RoosterInterface
 import dev.cypdashuhn.rooster.ui.items.InterfaceItem
 
@@ -8,7 +9,8 @@ import dev.cypdashuhn.rooster.ui.items.InterfaceItem
 /** Interface not finished, don't use! */
 abstract class FilterInterface<T : FilterInterface.FilterContext>(
     override var interfaceName: String,
-) : RoosterInterface<T>(interfaceName) {
+    contextHandler: ContextHandler<T>,
+) : RoosterInterface<T>(interfaceName, contextHandler) {
     abstract class FilterContext(
         val filter: MutableMap<String, Any?>
     ) : Context()

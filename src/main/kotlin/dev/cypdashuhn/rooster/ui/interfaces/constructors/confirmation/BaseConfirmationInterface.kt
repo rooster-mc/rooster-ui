@@ -4,6 +4,7 @@ import dev.cypdashuhn.rooster.common.util.createItem
 import dev.cypdashuhn.rooster.localization.t
 import dev.cypdashuhn.rooster.ui.interfaces.ClickInfo
 import dev.cypdashuhn.rooster.ui.interfaces.Context
+import dev.cypdashuhn.rooster.ui.interfaces.ContextHandler
 import dev.cypdashuhn.rooster.ui.interfaces.RoosterInterface
 import dev.cypdashuhn.rooster.ui.interfaces.options
 import dev.cypdashuhn.rooster.ui.items.InterfaceItem
@@ -14,10 +15,11 @@ import org.bukkit.event.inventory.InventoryCloseEvent
 
 abstract class BaseConfirmationInterface<T : Context>(
     override val interfaceName: String,
+    contextHandler: ContextHandler<T>,
     open val onConfirm: (ClickInfo<T>) -> Unit,
     open val onCancel: (CancelInfo<T>) -> Unit,
     val baseConfirmationOptions: BaseConfirmationOptions<T> = options { }
-) : RoosterInterface<T>(interfaceName) {
+) : RoosterInterface<T>(interfaceName, contextHandler) {
     class BaseConfirmationOptions<T : Context> : RoosterInterfaceOptions<T>() {
         var modifyConfirmationItem: InterfaceItem<T>.() -> InterfaceItem<T> = { this }
         var modifyCancelItem: InterfaceItem<T>.() -> InterfaceItem<T> = { this }

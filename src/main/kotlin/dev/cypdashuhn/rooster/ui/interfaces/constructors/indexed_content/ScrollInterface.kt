@@ -2,6 +2,7 @@ package dev.cypdashuhn.rooster.ui.interfaces.constructors.indexed_content
 
 import dev.cypdashuhn.rooster.common.util.createItem
 import dev.cypdashuhn.rooster.ui.interfaces.Context
+import dev.cypdashuhn.rooster.ui.interfaces.ContextHandler
 import dev.cypdashuhn.rooster.ui.interfaces.Slot
 import dev.cypdashuhn.rooster.ui.interfaces.handler
 import dev.cypdashuhn.rooster.ui.items.InterfaceItem
@@ -24,8 +25,9 @@ open class ScrollInterfaceOptions<T : Context> : IndexedContentInterface.Indexed
 
 abstract class ScrollInterface<ContextType : ScrollContext, DataType : Any>(
     override var interfaceName: String,
+    contextHandler: ContextHandler<ContextType>,
     val scrollOptions: ScrollInterfaceOptions<ContextType> = ScrollInterfaceOptions()
-) : IndexedContentInterface<ContextType, Int, DataType>(interfaceName, scrollOptions) {
+) : IndexedContentInterface<ContextType, Int, DataType>(interfaceName, contextHandler, scrollOptions) {
     enum class ScrollDirection {
         TOP_BOTTOM,
         LEFT_RIGHT

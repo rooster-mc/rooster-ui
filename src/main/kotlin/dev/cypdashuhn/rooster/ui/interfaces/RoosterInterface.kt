@@ -27,8 +27,9 @@ inline fun <T : Context, reified E : RoosterInterface.RoosterInterfaceOptions<T>
  */
 abstract class RoosterInterface<T : Context>(
     open val interfaceName: String,
+    contextHandler: ContextHandler<T>,
     val options: RoosterInterfaceOptions<T> = options { }
-) : ContextHandler<T> {
+) : ContextHandler<T> by contextHandler {
     open class RoosterInterfaceOptions<T : Context>() {
         // Click behaviour
         var cancelEvent: (ClickInfo<T>) -> Boolean = { true }

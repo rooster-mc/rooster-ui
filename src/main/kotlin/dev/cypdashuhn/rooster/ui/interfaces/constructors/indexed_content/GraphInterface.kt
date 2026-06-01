@@ -2,6 +2,7 @@ package dev.cypdashuhn.rooster.ui.interfaces.constructors.indexed_content
 
 import dev.cypdashuhn.rooster.common.util.createItem
 import dev.cypdashuhn.rooster.ui.interfaces.Context
+import dev.cypdashuhn.rooster.ui.interfaces.ContextHandler
 import dev.cypdashuhn.rooster.ui.interfaces.Slot
 import dev.cypdashuhn.rooster.ui.interfaces.options
 import dev.cypdashuhn.rooster.ui.items.InterfaceItem
@@ -10,8 +11,9 @@ import org.bukkit.entity.Player
 
 abstract class GraphInterface<ContextType : GraphInterface.GraphContext, DataType : Any>(
     override val interfaceName: String,
+    contextHandler: ContextHandler<ContextType>,
     val graphOptions: GraphOptions<ContextType> = options { }
-) : IndexedContentInterface<ContextType, Pair<Int, Int>, DataType>(interfaceName,  graphOptions) {
+) : IndexedContentInterface<ContextType, Pair<Int, Int>, DataType>(interfaceName, contextHandler, graphOptions) {
     class GraphOptions<T : Context> : IndexedContentOptions<T>() {
         var modifyVerticalPager: InterfaceItem<T>.() -> InterfaceItem<T> = { this }
         var modifyHorizontalPager: InterfaceItem<T>.() -> InterfaceItem<T> = { this }

@@ -62,4 +62,5 @@ inline fun <reified T : Context> handler(noinline default: (Player) -> T) =
     T::class.toHandler(default)
 
 inline fun <reified T : Context> handler(default: T) =
-    T::class.toHandler(default)
+
+T::class.toHandler(default)

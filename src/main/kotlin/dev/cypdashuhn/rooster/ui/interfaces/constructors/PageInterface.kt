@@ -18,13 +18,13 @@ import org.bukkit.inventory.Inventory
 abstract class DefaultPageInterface(
     interfaceName: String,
     pageOptions: PageInterfaceOptions<PageContext> = PageInterfaceOptions<PageContext>()
-) : PageInterface<PageInterface.PageContext>(interfaceName, pageOptions),
-    ContextHandler<PageInterface.PageContext> by PageContext.defaultHandler
+) : PageInterface<PageInterface.PageContext>(interfaceName, PageContext.defaultHandler, pageOptions)
 
 abstract class PageInterface<T : PageInterface.PageContext>(
     override val interfaceName: String,
+    contextHandler: ContextHandler<T>,
     pageOptions: PageInterfaceOptions<T> = PageInterfaceOptions<T>()
-) : RoosterInterface<T>(interfaceName, pageOptions) {
+) : RoosterInterface<T>(interfaceName, contextHandler, pageOptions) {
     // TODO: Handle different Page Turners
     open class PageInterfaceOptions<T : Context> : RoosterInterfaceOptions<T>() {
         var pageTurnerModifier: (InterfaceItem<T>) -> InterfaceItem<T> = { it }
@@ -88,11 +88,11 @@ abstract class PageInterface<T : PageInterface.PageContext>(
             if (overlappingPages.isNotEmpty()) UIWarnings.INTERFACE_PAGES_OVERLAP.warn(overlappingPages.mapValues { it.value.size })
         }
 
-        baseItems.addAll(pages.map { page ->
+        baseItems.addAll(pages.flatMap { page ->
             page.items.onEach { item ->
                 item.condition.add({ context.page == page.page }, PAGE_CONDITION_KEY)
             }
-        }.flatten())
+        })
 
         baseItems.add(pageOptions.pageTurnerModifier(pageTurner))
 
