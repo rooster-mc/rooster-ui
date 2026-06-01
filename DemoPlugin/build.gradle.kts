@@ -27,7 +27,7 @@ dependencies {
     implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:10.1.2")
     //implementation("dev.jorel:commandapi-bukkit-kotlin-shade-mojang-mapped:10.1.2")
 
-    implementation(project(":RoosterCommon"))
+    implementation(project(":RoosterCore"))
     implementation(project(":"))
 }
 tasks {
