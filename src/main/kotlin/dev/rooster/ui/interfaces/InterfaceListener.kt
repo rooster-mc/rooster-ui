@@ -1,6 +1,6 @@
-package dev.cypdashuhn.rooster.ui.interfaces
+package dev.rooster.ui.interfaces
 
-import dev.cypdashuhn.rooster.ui.RoosterUI.cache
+import dev.rooster.ui.RoosterUI.cache
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

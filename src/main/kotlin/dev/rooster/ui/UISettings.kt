@@ -1,7 +1,7 @@
-package dev.cypdashuhn.rooster.ui
+package dev.rooster.ui
 
-import dev.cypdashuhn.rooster.common.RoosterSettings
-import dev.cypdashuhn.rooster.common.WarningScaffold
+import dev.rooster.core.RoosterSettings
+import dev.rooster.core.WarningScaffold
 
 enum class UIWarnings(
     override var warningMethod: (Any) -> String = { "" },

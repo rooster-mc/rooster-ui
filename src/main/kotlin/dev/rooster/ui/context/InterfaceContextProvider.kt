@@ -1,8 +1,8 @@
-package dev.cypdashuhn.rooster.ui.context
+package dev.rooster.ui.context
 
-import dev.cypdashuhn.rooster.common.RoosterService
-import dev.cypdashuhn.rooster.ui.interfaces.Context
-import dev.cypdashuhn.rooster.ui.interfaces.RoosterInterface
+import dev.rooster.core.RoosterService
+import dev.rooster.ui.interfaces.Context
+import dev.rooster.ui.interfaces.RoosterInterface
 import org.bukkit.entity.Player
 import kotlin.reflect.KClass
 

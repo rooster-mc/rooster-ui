@@ -1,8 +1,8 @@
-package dev.cypdashuhn.rooster.ui.interfaces.constructors.confirmation
+package dev.rooster.ui.interfaces.constructors.confirmation
 
-import dev.cypdashuhn.rooster.ui.interfaces.Click
-import dev.cypdashuhn.rooster.ui.interfaces.ClickInfo
-import dev.cypdashuhn.rooster.ui.interfaces.Context
+import dev.rooster.ui.interfaces.Click
+import dev.rooster.ui.interfaces.ClickInfo
+import dev.rooster.ui.interfaces.Context
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 

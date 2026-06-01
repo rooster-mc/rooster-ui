@@ -1,10 +1,10 @@
-package dev.cypdashuhn.rooster.ui.demo
+package dev.rooster.ui.demo
 
-import dev.cypdashuhn.rooster.ui.RoosterUI
-import dev.cypdashuhn.rooster.ui.demo.commands.demo
-import dev.cypdashuhn.rooster.ui.demo.ui.TestInterface
-import dev.cypdashuhn.rooster.ui.demo.ui.TestPageInterface
-import dev.cypdashuhn.rooster.ui.demo.ui.TestScrollInterface
+import dev.rooster.ui.RoosterUI
+import dev.rooster.ui.demo.commands.demo
+import dev.rooster.ui.demo.ui.TestInterface
+import dev.rooster.ui.demo.ui.TestPageInterface
+import dev.rooster.ui.demo.ui.TestScrollInterface
 import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIBukkitConfig
 import org.bukkit.plugin.java.JavaPlugin

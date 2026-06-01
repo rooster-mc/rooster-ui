@@ -1,9 +1,9 @@
-package dev.cypdashuhn.rooster.ui.interfaces.constructors
+package dev.rooster.ui.interfaces.constructors
 
-import dev.cypdashuhn.rooster.ui.interfaces.Context
-import dev.cypdashuhn.rooster.ui.interfaces.ContextHandler
-import dev.cypdashuhn.rooster.ui.interfaces.RoosterInterface
-import dev.cypdashuhn.rooster.ui.items.InterfaceItem
+import dev.rooster.ui.interfaces.Context
+import dev.rooster.ui.interfaces.ContextHandler
+import dev.rooster.ui.interfaces.RoosterInterface
+import dev.rooster.ui.items.InterfaceItem
 
 // TODO: Finish this
 /** Interface not finished, don't use! */

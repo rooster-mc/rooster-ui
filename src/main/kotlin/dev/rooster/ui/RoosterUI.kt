@@ -1,15 +1,15 @@
-package dev.cypdashuhn.rooster.ui
+package dev.rooster.ui
 
 import com.google.common.cache.CacheBuilder
-import dev.cypdashuhn.rooster.common.RoosterCache
-import dev.cypdashuhn.rooster.common.RoosterModuleBuilder
-import dev.cypdashuhn.rooster.common.RoosterServices
-import dev.cypdashuhn.rooster.common.initRooster
-import dev.cypdashuhn.rooster.localization.core.localization
-import dev.cypdashuhn.rooster.ui.context.InterfaceContextProvider
-import dev.cypdashuhn.rooster.ui.context.YmlInterfaceContextProvider
-import dev.cypdashuhn.rooster.ui.interfaces.InterfaceListener
-import dev.cypdashuhn.rooster.ui.interfaces.RoosterInterface
+import dev.rooster.core.RoosterCache
+import dev.rooster.core.RoosterModuleBuilder
+import dev.rooster.core.RoosterServices
+import dev.rooster.core.initRooster
+import dev.rooster.localization.core.localization
+import dev.rooster.ui.context.InterfaceContextProvider
+import dev.rooster.ui.context.YmlInterfaceContextProvider
+import dev.rooster.ui.interfaces.InterfaceListener
+import dev.rooster.ui.interfaces.RoosterInterface
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.concurrent.TimeUnit

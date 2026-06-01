@@ -1,4 +1,4 @@
-package dev.cypdashuhn.rooster.ui.items
+package dev.rooster.ui.items
 
 class Slots {
     var slots: Array<Int>

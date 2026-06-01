@@ -1,7 +1,7 @@
-package dev.cypdashuhn.rooster.ui.interfaces.constructors.indexed_content
+package dev.rooster.ui.interfaces.constructors.indexed_content
 
-import dev.cypdashuhn.rooster.ui.interfaces.*
-import dev.cypdashuhn.rooster.ui.items.InterfaceItem
+import dev.rooster.ui.interfaces.*
+import dev.rooster.ui.items.InterfaceItem
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack

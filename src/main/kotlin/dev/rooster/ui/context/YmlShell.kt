@@ -1,6 +1,6 @@
-package dev.cypdashuhn.rooster.ui.context
+package dev.rooster.ui.context
 
-import dev.cypdashuhn.rooster.ui.RoosterUI
+import dev.rooster.ui.RoosterUI
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File

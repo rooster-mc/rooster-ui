@@ -8,7 +8,7 @@ plugins {
     id("com.gradleup.shadow") version "8.3.3"
 }
 
-group = "dev.cypdashuhn.rooster.ui.demo"
+group = "dev.rooster.ui.demo"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -38,7 +38,7 @@ tasks {
 }
 
 tasks.withType<ShadowJar> {
-    relocate("dev.jorel.commandapi", "dev.cypdashuhn.rooster.ui.demo.commandapi")
+    relocate("dev.jorel.commandapi", "dev.rooster.ui.demo.commandapi")
     manifest {
         attributes["paperweight-mappings-namespace"] = "mojang"
     }

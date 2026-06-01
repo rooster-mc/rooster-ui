@@ -1,9 +1,9 @@
-package dev.cypdashuhn.rooster.ui.context
+package dev.rooster.ui.context
 
 import com.google.gson.Gson
-import dev.cypdashuhn.rooster.common.util.uuid
-import dev.cypdashuhn.rooster.ui.interfaces.Context
-import dev.cypdashuhn.rooster.ui.interfaces.RoosterInterface
+import dev.rooster.core.util.uuid
+import dev.rooster.ui.interfaces.Context
+import dev.rooster.ui.interfaces.RoosterInterface
 import org.bukkit.entity.Player
 
 //TODO: Save context to multiple ymls, not all in one file

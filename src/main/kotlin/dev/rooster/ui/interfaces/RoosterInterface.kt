@@ -1,9 +1,9 @@
-package dev.cypdashuhn.rooster.ui.interfaces
+package dev.rooster.ui.interfaces
 
-import dev.cypdashuhn.rooster.ui.RoosterUI.interfaceContextProvider
-import dev.cypdashuhn.rooster.ui.items.InterfaceItem
-import dev.cypdashuhn.rooster.ui.items.InterfaceItemList
-import dev.cypdashuhn.rooster.ui.items.targetsNullableSlot
+import dev.rooster.ui.RoosterUI.interfaceContextProvider
+import dev.rooster.ui.items.InterfaceItem
+import dev.rooster.ui.items.InterfaceItemList
+import dev.rooster.ui.items.targetsNullableSlot
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.Bukkit

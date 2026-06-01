@@ -1,6 +1,6 @@
 version: 1.0
 name: DemoPlugin
-main: dev.cypdashuhn.rooster.ui.demo.DemoPlugin
+main: dev.rooster.ui.demo.DemoPlugin
 api-version: 1.21
 commands:
   interface-test:

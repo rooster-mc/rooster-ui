@@ -1,10 +1,10 @@
-package dev.cypdashuhn.rooster.ui.items
+package dev.rooster.ui.items
 
-import dev.cypdashuhn.rooster.common.util.createItem
-import dev.cypdashuhn.rooster.ui.interfaces.ClickInfo
-import dev.cypdashuhn.rooster.ui.interfaces.Context
-import dev.cypdashuhn.rooster.ui.interfaces.InterfaceInfo
-import dev.cypdashuhn.rooster.ui.interfaces.RoosterInterface
+import dev.rooster.core.util.createItem
+import dev.rooster.ui.interfaces.ClickInfo
+import dev.rooster.ui.interfaces.Context
+import dev.rooster.ui.interfaces.InterfaceInfo
+import dev.rooster.ui.interfaces.RoosterInterface
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import kotlin.reflect.KClass

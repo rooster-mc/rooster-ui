@@ -1,13 +1,13 @@
-package dev.cypdashuhn.rooster.ui.interfaces.constructors.confirmation
+package dev.rooster.ui.interfaces.constructors.confirmation
 
-import dev.cypdashuhn.rooster.common.util.createItem
-import dev.cypdashuhn.rooster.localization.t
-import dev.cypdashuhn.rooster.ui.interfaces.ClickInfo
-import dev.cypdashuhn.rooster.ui.interfaces.Context
-import dev.cypdashuhn.rooster.ui.interfaces.ContextHandler
-import dev.cypdashuhn.rooster.ui.interfaces.RoosterInterface
-import dev.cypdashuhn.rooster.ui.interfaces.options
-import dev.cypdashuhn.rooster.ui.items.InterfaceItem
+import dev.rooster.core.util.createItem
+import dev.rooster.localization.t
+import dev.rooster.ui.interfaces.ClickInfo
+import dev.rooster.ui.interfaces.Context
+import dev.rooster.ui.interfaces.ContextHandler
+import dev.rooster.ui.interfaces.RoosterInterface
+import dev.rooster.ui.interfaces.options
+import dev.rooster.ui.items.InterfaceItem
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.Player

@@ -1,11 +1,11 @@
-package dev.cypdashuhn.rooster.ui.demo.ui
+package dev.rooster.ui.demo.ui
 
-import dev.cypdashuhn.rooster.common.util.createItem
-import dev.cypdashuhn.rooster.common.util.toComponent
-import dev.cypdashuhn.rooster.ui.interfaces.ClickInfo
-import dev.cypdashuhn.rooster.ui.interfaces.InterfaceInfo
-import dev.cypdashuhn.rooster.ui.interfaces.constructors.indexed_content.ScrollContext
-import dev.cypdashuhn.rooster.ui.interfaces.constructors.indexed_content.ScrollInterface
+import dev.rooster.core.util.createItem
+import dev.rooster.core.util.toComponent
+import dev.rooster.ui.interfaces.ClickInfo
+import dev.rooster.ui.interfaces.InterfaceInfo
+import dev.rooster.ui.interfaces.constructors.indexed_content.ScrollContext
+import dev.rooster.ui.interfaces.constructors.indexed_content.ScrollInterface
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 

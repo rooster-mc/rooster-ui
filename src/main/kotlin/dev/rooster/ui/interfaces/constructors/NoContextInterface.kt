@@ -1,6 +1,6 @@
-package dev.cypdashuhn.rooster.ui.interfaces.constructors
+package dev.rooster.ui.interfaces.constructors
 
-import dev.cypdashuhn.rooster.ui.interfaces.*
+import dev.rooster.ui.interfaces.*
 
 abstract class NoContextInterface(
     override var interfaceName: String,

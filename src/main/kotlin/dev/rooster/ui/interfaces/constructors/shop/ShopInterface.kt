@@ -1,8 +1,8 @@
-package dev.cypdashuhn.rooster.ui.interfaces.constructors.shop
+package dev.rooster.ui.interfaces.constructors.shop
 
-import dev.cypdashuhn.rooster.ui.interfaces.Context
-import dev.cypdashuhn.rooster.ui.interfaces.InterfaceInfo
-import dev.cypdashuhn.rooster.ui.items.InterfaceItem
+import dev.rooster.ui.interfaces.Context
+import dev.rooster.ui.interfaces.InterfaceInfo
+import dev.rooster.ui.items.InterfaceItem
 
 class ShopInterface
 

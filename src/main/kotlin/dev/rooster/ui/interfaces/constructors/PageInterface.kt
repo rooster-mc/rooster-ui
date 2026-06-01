@@ -1,13 +1,13 @@
-package dev.cypdashuhn.rooster.ui.interfaces.constructors
+package dev.rooster.ui.interfaces.constructors
 
-import dev.cypdashuhn.rooster.common.util.createItem
-import dev.cypdashuhn.rooster.ui.UIWarnings
-import dev.cypdashuhn.rooster.ui.interfaces.Context
-import dev.cypdashuhn.rooster.ui.interfaces.ContextHandler
-import dev.cypdashuhn.rooster.ui.interfaces.RoosterInterface
-import dev.cypdashuhn.rooster.ui.interfaces.constructors.PageInterface.Page
-import dev.cypdashuhn.rooster.ui.interfaces.handler
-import dev.cypdashuhn.rooster.ui.items.InterfaceItem
+import dev.rooster.core.util.createItem
+import dev.rooster.ui.UIWarnings
+import dev.rooster.ui.interfaces.Context
+import dev.rooster.ui.interfaces.ContextHandler
+import dev.rooster.ui.interfaces.RoosterInterface
+import dev.rooster.ui.interfaces.constructors.PageInterface.Page
+import dev.rooster.ui.interfaces.handler
+import dev.rooster.ui.items.InterfaceItem
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.Bukkit

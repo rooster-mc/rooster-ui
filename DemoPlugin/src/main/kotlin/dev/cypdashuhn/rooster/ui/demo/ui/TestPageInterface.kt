@@ -1,7 +1,7 @@
-package dev.cypdashuhn.rooster.ui.demo.ui
+package dev.rooster.ui.demo.ui
 
-import dev.cypdashuhn.rooster.common.util.createItem
-import dev.cypdashuhn.rooster.ui.interfaces.constructors.DefaultPageInterface
+import dev.rooster.core.util.createItem
+import dev.rooster.ui.interfaces.constructors.DefaultPageInterface
 import org.bukkit.Material
 import org.bukkit.entity.Player
 

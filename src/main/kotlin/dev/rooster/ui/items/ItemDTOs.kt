@@ -1,8 +1,8 @@
-package dev.cypdashuhn.rooster.ui.items
+package dev.rooster.ui.items
 
-import dev.cypdashuhn.rooster.common.util.nextName
-import dev.cypdashuhn.rooster.ui.interfaces.Context
-import dev.cypdashuhn.rooster.ui.interfaces.InterfaceInfo
+import dev.rooster.core.util.nextName
+import dev.rooster.ui.interfaces.Context
+import dev.rooster.ui.interfaces.InterfaceInfo
 import kotlin.reflect.KClass
 
 class ConditionMap<T : Context> {

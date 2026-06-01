@@ -1,8 +1,8 @@
-package dev.cypdashuhn.rooster.ui.demo.commands
+package dev.rooster.ui.demo.commands
 
-import dev.cypdashuhn.rooster.ui.demo.ui.TestInterface
-import dev.cypdashuhn.rooster.ui.demo.ui.TestPageInterface
-import dev.cypdashuhn.rooster.ui.demo.ui.TestScrollInterface
+import dev.rooster.ui.demo.ui.TestInterface
+import dev.rooster.ui.demo.ui.TestPageInterface
+import dev.rooster.ui.demo.ui.TestScrollInterface
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
 import dev.jorel.commandapi.arguments.StringArgument

@@ -1,11 +1,11 @@
-package dev.cypdashuhn.rooster.ui.interfaces.constructors.indexed_content
+package dev.rooster.ui.interfaces.constructors.indexed_content
 
-import dev.cypdashuhn.rooster.common.util.createItem
-import dev.cypdashuhn.rooster.ui.interfaces.Context
-import dev.cypdashuhn.rooster.ui.interfaces.ContextHandler
-import dev.cypdashuhn.rooster.ui.interfaces.Slot
-import dev.cypdashuhn.rooster.ui.interfaces.options
-import dev.cypdashuhn.rooster.ui.items.InterfaceItem
+import dev.rooster.core.util.createItem
+import dev.rooster.ui.interfaces.Context
+import dev.rooster.ui.interfaces.ContextHandler
+import dev.rooster.ui.interfaces.Slot
+import dev.rooster.ui.interfaces.options
+import dev.rooster.ui.items.InterfaceItem
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
