@@ -23,6 +23,12 @@ dependencies {
     implementation("dev.rooster.core:rooster-core:1.0-SNAPSHOT")
     implementation("dev.rooster.ui:RoosterUI:1.0-SNAPSHOT")
     implementation("dev.rooster.db:RoosterDb:1.0-SNAPSHOT")
+
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation("org.jetbrains.exposed:exposed-core:0.49.0")
+    implementation("org.jetbrains.exposed:exposed-dao:0.49.0")
+    implementation("org.jetbrains.exposed:exposed-json:0.49.0")
 }
 
 tasks.test {
