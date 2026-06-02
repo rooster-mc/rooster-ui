@@ -1,10 +1,8 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm") version "2.2.0"
 }
 
-group = "dev.rooster.ui"
+group = "dev.rooster.ui.sql"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -16,13 +14,15 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
+    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
-    testImplementation("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
 
     implementation("dev.rooster.core:rooster-core:1.0-SNAPSHOT")
-    implementation("dev.rooster.localization:rooster-localization:1.0-SNAPSHOT")
+    implementation("dev.rooster.ui:RoosterUI:1.0-SNAPSHOT")
+    implementation("dev.rooster.db:RoosterDb:1.0-SNAPSHOT")
 }
 
 tasks.test {
@@ -30,8 +30,4 @@ tasks.test {
 }
 kotlin {
     jvmToolchain(21)
-}
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.compilerOptions {
-    freeCompilerArgs.set(listOf("-XXLanguage:+WhenGuards"))
 }

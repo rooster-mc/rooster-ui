@@ -1,10 +1,8 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
-    kotlin("jvm")
+    kotlin("jvm") version "2.2.0"
     id("xyz.jpenilla.run-paper") version "2.3.1"
-    // shade plugin
-    id("com.github.johnrengelman.shadow") version "8.1.1"
     id("com.gradleup.shadow") version "8.3.3"
 }
 
@@ -27,8 +25,8 @@ dependencies {
     implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:10.1.2")
     //implementation("dev.jorel:commandapi-bukkit-kotlin-shade-mojang-mapped:10.1.2")
 
-    implementation(project(":RoosterCore"))
-    implementation(project(":"))
+    implementation("dev.rooster.core:rooster-core:1.0-SNAPSHOT")
+    implementation("dev.rooster.ui:RoosterUI:1.0-SNAPSHOT")
 }
 tasks {
     runServer {

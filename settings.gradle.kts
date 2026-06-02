@@ -3,10 +3,7 @@ plugins {
 }
 rootProject.name = "RoosterUI"
 
-include(":RoosterCore")
-project(":RoosterCore").projectDir = file("../rooster-core")
-
-include(":RoosterLocalization")
-project(":RoosterLocalization").projectDir = file("../rooster-localization")
-
-include("DemoPlugin")
+includeBuild("../rooster-core")
+includeBuild("../rooster-localization")
+includeBuild("demo-plugin")
+includeBuild("rooster-ui-sql")
