@@ -6,12 +6,17 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
+interface ContentProvidable<ContextType : Context, IdType : Any, DataType : Any> {
+    fun contentProvider(id: IdType, context: ContextType): DataType?
+}
 
 abstract class IndexedContentInterface<ContextType : Context, IdType : Any, DataType : Any>(
     interfaceName: InterfaceName,
     contextHandler: ContextHandler<ContextType>,
     indexedContentOptions: IndexedContentOptions<ContextType> = IndexedContentOptions()
-) : RoosterInterface<ContextType>(interfaceName, contextHandler, indexedContentOptions) {
+) : RoosterInterface<ContextType>(interfaceName, contextHandler, indexedContentOptions),
+    ContentProvidable<ContextType, IdType, DataType>
+{
     open class IndexedContentOptions<T : Context> : RoosterInterfaceOptions<T>() {
         var contentArea: Pair<Pair<Int, Int>, Pair<Int, Int>> = (0 to 0) to (8 to 5)
 
@@ -106,7 +111,6 @@ abstract class IndexedContentInterface<ContextType : Context, IdType : Any, Data
     open fun getOtherItems(): List<InterfaceItem<ContextType>> = emptyList()
 
     abstract fun slotToId(slot: Slot, context: ContextType, player: Player): IdType?
-    abstract fun contentProvider(id: IdType, context: ContextType): DataType?
     protected fun dataFromPosition(slot: Int, context: ContextType, player: Player): DataType? {
         val absoluteSlot = slotToId(slot, context, player) ?: return null
         return contentProvider(absoluteSlot, context)
