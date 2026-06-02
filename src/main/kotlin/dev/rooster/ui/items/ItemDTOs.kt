@@ -1,6 +1,5 @@
 package dev.rooster.ui.items
 
-import dev.rooster.core.util.nextName
 import dev.rooster.ui.interfaces.Context
 import dev.rooster.ui.interfaces.InterfaceInfo
 import kotlin.reflect.KClass
@@ -107,5 +106,22 @@ class InterfaceItemList<T : Context>(itemStackList: List<InterfaceItem<T>>) {
                 }
             }
         }
+    }
+}
+
+fun appendNumber(name: String): String {
+    val regex = "\\d+$".toRegex()
+    return if (regex.containsMatchIn(name)) {
+        val number = regex.find(name)?.value?.toIntOrNull() ?: 0
+        name.replace(regex, (number + 1).toString())
+    } else {
+        "${name}2"
+    }
+}
+
+fun nextName(name: String, list: List<String>): String {
+    return when {
+        list.contains(name) -> appendNumber(name)
+        else -> name
     }
 }
