@@ -42,7 +42,7 @@ abstract class ScrollInterface<ContextType : ScrollContext, DataType : Any>(
             .displayAs(createItem(Material.COMPASS))
             .modifyContext {
                 var scrollAmount = if (event.click.isShiftClick) 5 else 1
-                if (event.click.isLeftClick) scrollAmount *= -1
+                if (event.click.isRightClick) scrollAmount *= -1
 
                 context.position += scrollAmount
                 if (context.position < 0) context.position = 0

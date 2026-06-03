@@ -2,6 +2,7 @@ package dev.rooster.ui.interfaces
 
 import dev.rooster.ui.RoosterUI
 import dev.rooster.ui.RoosterUI.cache
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
@@ -12,11 +13,9 @@ typealias InterfaceName = String
 
 internal object InterfaceManager {
     fun closeInterface(player: Player, event: InventoryCloseEvent) {
-        cache.invalidate(CURRENT_INTERFACE_KEY, player)
-
-        // Invoke onClose for the interface
         @Suppress("UNCHECKED_CAST")
         val correspondingInterface = currentInterface(player) as RoosterInterface<Context>? ?: return
+        cache.invalidate(CURRENT_INTERFACE_KEY, player)
         val context = correspondingInterface.getContext(player)
         correspondingInterface.onClose(player, context, event)
     }
@@ -30,13 +29,14 @@ internal object InterfaceManager {
      * of the interface ([context]).
      */
     fun <T : Context> openTargetInterface(player: Player, targetInterface: RoosterInterface<T>, context: T): Inventory {
-        cache.put(CHANGES_INTERFACE_KEY, player, true)
-        cache.put(CURRENT_INTERFACE_KEY, player, targetInterface.interfaceName)
-
         RoosterUI.interfaceContextProvider.updateContext(player, targetInterface, context)
 
         val inventory = getInventory(targetInterface, context, player)
-        player.openInventory(inventory)
+        Bukkit.getScheduler().runTask(RoosterUI.plugin, Runnable {
+            cache.put(CHANGES_INTERFACE_KEY, player, true)
+            cache.put(CURRENT_INTERFACE_KEY, player, targetInterface.interfaceName)
+            player.openInventory(inventory)
+        })
         return inventory
     }
 

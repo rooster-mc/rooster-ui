@@ -87,7 +87,7 @@ abstract class RoosterInterface<T : Context>(
         var maxSlot = items
             .mapNotNull { it.slots }
             .flatMap { it.slots.toList() }
-            .maxOrNull() ?: return emptyMap()
+            .maxOrNull() ?: 0
         if (maxSlot < 6 * 9) maxSlot = 6 * 9
 
         val map = mutableMapOf<Slot, InterfaceItemList<T>>()
