@@ -1,7 +1,6 @@
 package dev.rooster.ui.interfaces.constructors.indexed_content
 
 import dev.rooster.ui.interfaces.*
-import dev.rooster.ui.interfaces.constructors.indexed_content.IndexedContentInterface.IndexedContentOptions
 import dev.rooster.ui.items.InterfaceItem
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -11,11 +10,10 @@ interface ContentProvidable<ContextType : Context, IdType : Any, DataType : Any>
     fun contentProvider(id: IdType, context: ContextType): DataType?
 }
 
-fun <T : Context> IndexedContentOptions<T>.sizeFromRows(rows: Int) {
+fun <T : Context> IndexedContentInterface.IndexedContentOptions<T>.sizeFromRows(rows: Int) {
     inventorySize = InventorySize.fromRows(rows)
     contentArea = ContentArea.fromRows(rows - 1)
 }
-
 
 abstract class IndexedContentInterface<ContextType : Context, IdType : Any, DataType : Any>(
     interfaceName: InterfaceName,
@@ -61,23 +59,15 @@ abstract class IndexedContentInterface<ContextType : Context, IdType : Any, Data
             .priority(-1)
             .onClick { }
 
-    abstract fun contentDisplay(data: DataType, context: ContextType): InterfaceInfo<ContextType>.() -> ItemStack
-    abstract fun contentClick(data: DataType, context: ContextType): ClickInfo<ContextType>.() -> Unit
-
-    final override fun getInterfaceItems(): List<InterfaceItem<ContextType>> {
-        val list = mutableListOf(
-            indexedContentOptions.modifyContentItem(contentItem),
-            indexedContentOptions.modifyClickInArea(clickInArea)
-        )
-
-        list.addAll(getFrameItems())
-        list.addAll(getOtherItems())
-
-        return list
+    init {
+        addItems {
+            add(indexedContentOptions.modifyContentItem(contentItem))
+            add(indexedContentOptions.modifyClickInArea(clickInArea))
+        }
     }
 
-    abstract fun getFrameItems(): List<InterfaceItem<ContextType>>
-    open fun getOtherItems(): List<InterfaceItem<ContextType>> = emptyList()
+    abstract fun contentDisplay(data: DataType, context: ContextType): InterfaceInfo<ContextType>.() -> ItemStack
+    abstract fun contentClick(data: DataType, context: ContextType): ClickInfo<ContextType>.() -> Unit
 
     abstract fun slotToId(slot: Slot, context: ContextType, player: Player): IdType?
     protected fun dataFromPosition(slot: Int, context: ContextType, player: Player): DataType? {

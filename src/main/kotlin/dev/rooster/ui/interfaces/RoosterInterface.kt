@@ -41,7 +41,12 @@ abstract class RoosterInterface<T : Context>(
         var inventoryTitle: ((Player, T) -> TextComponent)? = null
     }
 
-    val items by lazy { getInterfaceItems() }
+    private val _itemBlocks = mutableListOf<MutableList<InterfaceItem<T>>.() -> Unit>()
+    protected fun addItems(block: MutableList<InterfaceItem<T>>.() -> Unit) { _itemBlocks += block }
+    internal fun getInterfaceListItems(): List<InterfaceItem<T>> =
+        mutableListOf<InterfaceItem<T>>().also { list -> _itemBlocks.forEach { list.it() } }
+
+    val items by lazy { getInterfaceItems() + getInterfaceListItems() }
     val bottomRow by lazy { options.inventorySize.slots - 9 }
 
 

@@ -8,7 +8,6 @@ import dev.rooster.ui.interfaces.handler
 import dev.rooster.ui.items.InterfaceItem
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import kotlin.run
 
 open class ScrollContext(
     open var position: Int = 0
@@ -46,9 +45,9 @@ abstract class ScrollInterface<ContextType : ScrollContext, DataType : Any>(
                 if (context.position < 0) context.position = 0
             }.run(scrollOptions.modifyScroller)
 
-    final override fun getFrameItems(): List<InterfaceItem<ContextType>> = listOf(
-        scroller
-    )
+    init {
+        addItems { add(scroller) }
+    }
 
     final override fun slotToId(slot: Slot, context: ContextType, player: Player): Int? {
         val (x, y) = contentArea.offset(slot) ?: return null

@@ -45,10 +45,12 @@ abstract class GraphInterface<ContextType : GraphInterface.GraphContext, DataTyp
                 context.position = x + scrollAmount to context.position.second
             }
 
-    final override fun getFrameItems(): List<InterfaceItem<ContextType>> = listOf(
-        graphOptions.modifyVerticalPager(verticalPager),
-        graphOptions.modifyHorizontalPager(horizontalPager)
-    )
+    init {
+        addItems {
+            add(graphOptions.modifyVerticalPager(verticalPager))
+            add(graphOptions.modifyHorizontalPager(horizontalPager))
+        }
+    }
 
     override fun slotToId(slot: Slot, context: ContextType, player: Player): Pair<Int, Int>? {
         val (x, y) = contentArea.offset(slot) ?: return null
