@@ -63,6 +63,9 @@ class InterfaceItem<T : Context> {
     fun atSlot(slot: Int) = copy {
         this.slots = Slots(slot)
     }
+    fun atSlot(row: Int, slot: Int) = copy {
+        this.slots = Slots((row-1) * 9 +slot)
+    }
 
     fun atSlots(vararg slots: Int) = atSlots(slots.toList())
 
