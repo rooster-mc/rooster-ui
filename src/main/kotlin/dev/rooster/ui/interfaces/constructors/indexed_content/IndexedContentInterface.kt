@@ -1,6 +1,7 @@
 package dev.rooster.ui.interfaces.constructors.indexed_content
 
 import dev.rooster.ui.interfaces.*
+import dev.rooster.ui.interfaces.constructors.indexed_content.IndexedContentInterface.IndexedContentOptions
 import dev.rooster.ui.items.InterfaceItem
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -10,6 +11,12 @@ interface ContentProvidable<ContextType : Context, IdType : Any, DataType : Any>
     fun contentProvider(id: IdType, context: ContextType): DataType?
 }
 
+fun <T : Context> IndexedContentOptions<T>.sizeFromRows(rows: Int) {
+    inventorySize = InventorySize.fromRows(rows)
+    contentArea = ContentArea.fromRows(rows - 1)
+}
+
+
 abstract class IndexedContentInterface<ContextType : Context, IdType : Any, DataType : Any>(
     interfaceName: InterfaceName,
     contextHandler: ContextHandler<ContextType>,
@@ -18,56 +25,18 @@ abstract class IndexedContentInterface<ContextType : Context, IdType : Any, Data
     ContentProvidable<ContextType, IdType, DataType>
 {
     open class IndexedContentOptions<T : Context> : RoosterInterfaceOptions<T>() {
-        var contentArea: Pair<Pair<Int, Int>, Pair<Int, Int>> = (0 to 0) to (8 to 5)
+        var contentArea: ContentArea = ContentArea.fromRows(5)
 
         var modifyContentItem: InterfaceItem<T>.() -> InterfaceItem<T> = { this }
         var modifyClickInArea: InterfaceItem<T>.() -> InterfaceItem<T> = { this }
     }
 
-    val indexedContentOptions = (super.options as IndexedContentOptions<ContextType>).also {
-        require(
-            it.contentArea.first.first in 0..8 && it.contentArea.first.second in 0..5 &&
-                    it.contentArea.second.first >= it.contentArea.first.first && it.contentArea.second.second >= it.contentArea.first.second
-        ) {
-            "require valid content area. x 0-8, y 0-5, second always larger then first"
-        }
-    }
-
-    val contentAreaStartX by lazy { indexedContentOptions.contentArea.first.second }
-    val contentAreaStartY by lazy { indexedContentOptions.contentArea.first.second }
-    val contentAreaEndX by lazy { indexedContentOptions.contentArea.second.first }
-    val contentAreaEndY by lazy { indexedContentOptions.contentArea.second.second }
-
-    val contentXWidth by lazy { contentAreaEndX - contentAreaStartX + 1 }
-    val contentYWidth by lazy { contentAreaEndY - contentAreaStartY + 1 }
-    val contentXRange by lazy { contentAreaStartX..contentAreaEndX }
-    val contentYRange by lazy { contentAreaStartY..contentAreaEndY }
-
-    val bottomRow by lazy { contentAreaEndY * 9 }
-
-    /** Returns the Offset, the Relative being the upper left corner. */
-    fun offset(slot: Slot): Pair<Int, Int>? {
-        val x = (slot % 9) // 9 being inventory width
-        val y = (slot / 9)
-
-        return if (x in contentXRange && y in contentYRange) {
-            x - contentAreaStartX to y - contentAreaStartY
-        } else {
-            null
-        }
-    }
-
-    fun allValidSlots(): List<Int> {
-        return contentXRange.flatMap { x ->
-            contentYRange.map { y ->
-                (y + contentAreaStartY) * 9 + (x + contentAreaStartX)
-            }
-        }
-    }
+    val indexedContentOptions = super.options as IndexedContentOptions<ContextType>
+    val contentArea get() = indexedContentOptions.contentArea
 
     private val contentItem
         get() = item()
-            .atSlots(allValidSlots())
+            .atSlots(contentArea.allValidSlots())
             .usedWhen {
                 val data = dataFromPosition(slot, context, player)
                 data != null
@@ -83,7 +52,7 @@ abstract class IndexedContentInterface<ContextType : Context, IdType : Any, Data
 
     private val clickInArea
         get() = item()
-            .atSlots((0..(6 * 9)) - allValidSlots().toSet())
+            .atSlots((0..(6 * 9)) - contentArea.allValidSlots().toSet())
             .usedWhen {
                 val dataExists = dataFromPosition(slot, context, player) != null
                 !dataExists

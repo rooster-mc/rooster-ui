@@ -8,6 +8,7 @@ import dev.rooster.ui.interfaces.handler
 import dev.rooster.ui.items.InterfaceItem
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import kotlin.run
 
 open class ScrollContext(
     open var position: Int = 0
@@ -18,7 +19,7 @@ open class ScrollContext(
 }
 
 open class ScrollInterfaceOptions<T : Context> : IndexedContentInterface.IndexedContentOptions<T>() {
-    var scrollDirection: ScrollInterface.ScrollDirection = ScrollInterface.ScrollDirection.LEFT_RIGHT
+    var scrollDirection: ScrollInterface.ScrollDirection = ScrollInterface.ScrollDirection.TOP_BOTTOM
 
     var modifyScroller: InterfaceItem<T>.() -> InterfaceItem<T> = { this }
 }
@@ -33,12 +34,9 @@ abstract class ScrollInterface<ContextType : ScrollContext, DataType : Any>(
         LEFT_RIGHT
     }
 
-    private val rowSize: Int
-        get() = if (scrollOptions.scrollDirection == ScrollDirection.LEFT_RIGHT) contentXWidth else contentYWidth
-
     private val scroller
         get() = item()
-            .atSlot(bottomRow + 8)
+            .atSlot(contentArea.bottomRow + 9 + 8)
             .displayAs(createItem(Material.COMPASS))
             .modifyContext {
                 var scrollAmount = if (event.click.isShiftClick) 5 else 1
@@ -53,10 +51,10 @@ abstract class ScrollInterface<ContextType : ScrollContext, DataType : Any>(
     )
 
     final override fun slotToId(slot: Slot, context: ContextType, player: Player): Int? {
-        val (x, y) = offset(slot) ?: return null
-        val result = if (scrollOptions.scrollDirection == ScrollDirection.LEFT_RIGHT)
-            x + (y + context.position) * contentXWidth
-        else y + (x + context.position) * contentYWidth
+        val (x, y) = contentArea.offset(slot) ?: return null
+        val result = if (scrollOptions.scrollDirection == ScrollDirection.TOP_BOTTOM)
+            x + (y + context.position) * contentArea.xWidth
+        else y + (x + context.position) * contentArea.yWidth
 
         return result
     }

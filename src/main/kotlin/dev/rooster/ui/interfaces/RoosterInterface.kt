@@ -37,17 +37,18 @@ abstract class RoosterInterface<T : Context>(
         var ignoreEmptySlots: Boolean = true
 
         // Inventory-Creator
-        var inventorySize: Int = 9 * 6
+        var inventorySize: InventorySize = InventorySize.SIX_ROWS
         var inventoryTitle: ((Player, T) -> TextComponent)? = null
     }
 
     val items by lazy { getInterfaceItems() }
+    val bottomRow by lazy { options.inventorySize.slots - 9 }
 
 
     open fun getInventory(player: Player, context: T): Inventory {
         return Bukkit.createInventory(
             player,
-            options.inventorySize,
+            options.inventorySize.slots,
             options.inventoryTitle?.invoke(player, context) ?: Component.text(interfaceName)
         )
     }

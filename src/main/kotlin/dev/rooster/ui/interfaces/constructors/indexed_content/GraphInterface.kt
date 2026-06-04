@@ -25,7 +25,7 @@ abstract class GraphInterface<ContextType : GraphInterface.GraphContext, DataTyp
 
     private val verticalPager
         get() = item()
-            .atSlot(bottomRow + 8)
+            .atSlot(contentArea.bottomRow + 8)
             .displayAs(createItem(Material.COMPASS))
             .modifyContext {
                 val y = context.position.second
@@ -36,7 +36,7 @@ abstract class GraphInterface<ContextType : GraphInterface.GraphContext, DataTyp
 
     private val horizontalPager
         get() = item()
-            .atSlot(bottomRow + 8)
+            .atSlot(contentArea.bottomRow + 8)
             .displayAs(createItem(Material.COMPASS))
             .modifyContext {
                 val x = context.position.first
@@ -51,7 +51,7 @@ abstract class GraphInterface<ContextType : GraphInterface.GraphContext, DataTyp
     )
 
     override fun slotToId(slot: Slot, context: ContextType, player: Player): Pair<Int, Int>? {
-        val (x, y) = offset(slot) ?: return null
+        val (x, y) = contentArea.offset(slot) ?: return null
         val (posX, posY) = context.position
 
         return x + posX to y + posY
