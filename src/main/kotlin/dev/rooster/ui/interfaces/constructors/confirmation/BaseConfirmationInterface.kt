@@ -1,14 +1,12 @@
 package dev.rooster.ui.interfaces.constructors.confirmation
 
-import dev.rooster.core.util.createItem
-import dev.rooster.localization.t
 import dev.rooster.ui.interfaces.ClickInfo
 import dev.rooster.ui.interfaces.Context
 import dev.rooster.ui.interfaces.ContextHandler
 import dev.rooster.ui.interfaces.RoosterInterface
 import dev.rooster.ui.interfaces.options
 import dev.rooster.ui.items.InterfaceItem
-import net.kyori.adventure.text.Component
+import dev.rooster.ui.messages.ConfirmationMessages
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryCloseEvent
@@ -28,15 +26,14 @@ abstract class BaseConfirmationInterface<T : Context>(
     private val confirmationItem
         get() = item()
             .atSlot(8)
-            .displayAs(createItem(Material.GREEN_STAINED_GLASS_PANE, name = Component.text(t("confirm"))))
+            .displayAs(Material.GREEN_STAINED_GLASS_PANE, ConfirmationMessages.default.confirm)
             .onClick(onConfirm)
 
     private val cancelItem
         get() = item()
             .atSlot(0)
-            .displayAs(createItem(Material.RED_STAINED_GLASS_PANE, name = Component.text("")))
+            .displayAs(Material.RED_STAINED_GLASS_PANE, ConfirmationMessages.default.cancel)
             .onClick { onCancel(CancelInfo.fromClick(this)) }
-
 
     abstract fun getOtherItems(): List<InterfaceItem<T>>
     override fun getInterfaceItems(): List<InterfaceItem<T>> {

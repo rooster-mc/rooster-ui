@@ -1,13 +1,12 @@
 package dev.rooster.ui.interfaces.constructors.confirmation
 
 import dev.rooster.core.util.createItem
-import dev.rooster.localization.t
 import dev.rooster.ui.interfaces.ClickInfo
 import dev.rooster.ui.interfaces.Context
 import dev.rooster.ui.interfaces.DefaultContextHandler
 import dev.rooster.ui.items.InterfaceItem
+import dev.rooster.ui.messages.ConfirmationMessages
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -18,11 +17,8 @@ abstract class ConfirmationInterface(
     override val onConfirm: (ClickInfo<Context>) -> Unit,
     override val onCancel: (CancelInfo<Context>) -> Unit,
 ) : BaseConfirmationInterface<Context>(interfaceName, DefaultContextHandler, onConfirm, onCancel) {
-    open fun getInventoryName(player: Player, context: Context): Component {
-        return Component
-            .text("# ${t("confirm", player)} #")
-            .color(TextColor.color(200, 0, 0))
-    }
+    open fun getInventoryName(player: Player, context: Context): Component =
+        ConfirmationMessages.default.title.resolve(player)
 
     override fun getInventory(player: Player, context: Context): Inventory {
         return Bukkit.createInventory(null, 9, getInventoryName(player, context))

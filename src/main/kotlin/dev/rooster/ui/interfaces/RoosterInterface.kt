@@ -5,7 +5,6 @@ import dev.rooster.ui.items.InterfaceItem
 import dev.rooster.ui.items.InterfaceItemList
 import dev.rooster.ui.items.targetsNullableSlot
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryCloseEvent
@@ -38,7 +37,7 @@ abstract class RoosterInterface<T : Context>(
 
         // Inventory-Creator
         var inventorySize: InventorySize = InventorySize.SIX_ROWS
-        var inventoryTitle: ((Player, T) -> TextComponent)? = null
+        var inventoryTitle: ((Player, T) -> Component)? = null
     }
 
     private val _itemBlocks = mutableListOf<MutableList<InterfaceItem<T>>.() -> Unit>()

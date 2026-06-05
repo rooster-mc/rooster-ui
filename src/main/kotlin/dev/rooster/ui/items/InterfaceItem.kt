@@ -1,5 +1,6 @@
 package dev.rooster.ui.items
 
+import dev.rooster.core.message.Message
 import dev.rooster.core.util.createItem
 import dev.rooster.ui.interfaces.ClickInfo
 import dev.rooster.ui.interfaces.Context
@@ -7,6 +8,7 @@ import dev.rooster.ui.interfaces.InterfaceInfo
 import dev.rooster.ui.interfaces.RoosterInterface
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import kotlin.reflect.KClass
 
 class InterfaceItem<T : Context> {
@@ -120,6 +122,14 @@ class InterfaceItem<T : Context> {
         copy { this.displayItem = itemStackCreator }
 
     fun displayAs(itemStack: ItemStack): InterfaceItem<T> = copy { this.displayItem = { itemStack } }
+
+    fun displayAs(
+        material: Material,
+        name: Message,
+        description: List<Message>? = null,
+        amount: Int = 1,
+        additional: (ItemMeta) -> Unit = {}
+    ): InterfaceItem<T> = displayAs { createItem(material, name, player, description, amount, additional) }
 
     fun copy(modifyingBlock: InterfaceItem<T>.() -> Unit): InterfaceItem<T> {
         val copy = InterfaceItem(contextClass).also {
