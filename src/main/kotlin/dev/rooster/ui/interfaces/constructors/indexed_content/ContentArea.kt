@@ -23,7 +23,7 @@ class ContentArea(
     val yWidth: Int get() = maxY - minY + 1
     val xRange: IntRange get() = minX..maxX
     val yRange: IntRange get() = minY..maxY
-    val bottomRow: Int get() = maxY * 9
+    val bottomRow: Int get() = (maxY + 1) * 9
 
     /** Returns the (x, y) offset relative to the top-left corner, or null if the slot is outside this area. */
     fun offset(slot: Int): Pair<Int, Int>? {
