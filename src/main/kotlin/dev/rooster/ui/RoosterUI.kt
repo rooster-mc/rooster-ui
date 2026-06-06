@@ -5,7 +5,6 @@ import dev.rooster.core.RoosterCache
 import dev.rooster.core.RoosterModuleBuilder
 import dev.rooster.core.RoosterServices
 import dev.rooster.core.initRooster
-import dev.rooster.localization.core.localization
 import dev.rooster.ui.context.InterfaceContextProvider
 import dev.rooster.ui.context.YmlInterfaceContextProvider
 import dev.rooster.ui.interfaces.InterfaceListener
@@ -45,7 +44,6 @@ object RoosterUI {
         pluginManager.registerEvents(InterfaceListener, plugin)
 
         initRooster(plugin) {
-            localization()
         }
     }
 }
