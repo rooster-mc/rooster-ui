@@ -1,6 +1,7 @@
 package dev.rooster.ui.interfaces.constructors.indexed_content
 
 import dev.rooster.core.util.createItem
+import dev.rooster.ui.UIConstants
 import dev.rooster.ui.interfaces.Context
 import dev.rooster.ui.interfaces.ContextHandler
 import dev.rooster.ui.interfaces.Slot
@@ -25,7 +26,7 @@ abstract class GraphInterface<ContextType : GraphInterface.GraphContext, DataTyp
 
     private val verticalPager
         get() = item()
-            .atSlot(contentArea.bottomRow + 8)
+            .atSlot(contentArea.bottomRow + UIConstants.MAX_COLUMN_INDEX)
             .displayAs(createItem(Material.COMPASS))
             .modifyContext {
                 val y = context.position.second
@@ -36,7 +37,7 @@ abstract class GraphInterface<ContextType : GraphInterface.GraphContext, DataTyp
 
     private val horizontalPager
         get() = item()
-            .atSlot(contentArea.bottomRow + 8)
+            .atSlot(contentArea.bottomRow + UIConstants.MAX_COLUMN_INDEX)
             .displayAs(createItem(Material.COMPASS))
             .modifyContext {
                 val x = context.position.first

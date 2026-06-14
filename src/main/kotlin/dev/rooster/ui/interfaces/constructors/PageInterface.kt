@@ -1,6 +1,7 @@
 package dev.rooster.ui.interfaces.constructors
 
 import dev.rooster.core.util.createItem
+import dev.rooster.ui.UIConstants
 import dev.rooster.ui.UIWarnings
 import dev.rooster.ui.interfaces.Context
 import dev.rooster.ui.interfaces.ContextHandler
@@ -47,29 +48,41 @@ abstract class PageInterface<T : PageInterface.PageContext>(
         }
     }
 
-    data class Page<T : Context>(val page: Int, val items: List<InterfaceItem<T>>)
+    data class Page<T : Context>(
+        val page: Int,
+        val items: List<InterfaceItem<T>>
+    )
 
     val bottomBar
-        get() = pageOptions.contentRowAmount * 9
+        get() = pageOptions.contentRowAmount * UIConstants.ROW_SIZE
 
     abstract fun getPages(): List<Page<T>>
 
     val pageTurner
-        get() = item().atSlot(bottomBar + 8).displayAs(createItem(Material.COMPASS, name = Component.empty()))
+        get() = item()
+            .atSlot(bottomBar + UIConstants.MAX_COLUMN_INDEX)
+            .displayAs(createItem(Material.COMPASS, name = Component.empty()))
             .modifyContext {
-                if (event.click.isLeftClick) context.page += 1
-                else context.page -= 1
+                if (event.click.isLeftClick) {
+                    context.page += 1
+                } else {
+                    context.page -= 1
+                }
                 if (context.page < 0) context.page = 0
             }
 
     val forwardPageTurner
-        get() = item().atSlot(bottomBar + 7).displayAs(createItem(Material.COMPASS, name = Component.empty()))
+        get() = item()
+            .atSlot(bottomBar + UIConstants.MAX_COLUMN_INDEX - 1)
+            .displayAs(createItem(Material.COMPASS, name = Component.empty()))
             .modifyContext {
                 context.page += 1
                 if (context.page < 0) context.page = 0
             }
     val backwardsPageTurner
-        get() = item().atSlot(bottomBar + 6).displayAs(createItem(Material.COMPASS, name = Component.empty()))
+        get() = item()
+            .atSlot(bottomBar + UIConstants.MAX_COLUMN_INDEX - 2)
+            .displayAs(createItem(Material.COMPASS, name = Component.empty()))
             .modifyContext {
                 context.page -= 1
                 if (context.page < 0) context.page = 0
@@ -79,10 +92,13 @@ abstract class PageInterface<T : PageInterface.PageContext>(
         val baseItems = mutableListOf<InterfaceItem<T>>()
 
         val pages = getPages()
-        if (pages.isEmpty()) UIWarnings.INTERFACE_PAGES_EMPTY.warn()
-        else if (pages.none { it.page == 0 } && pages.any { it.page > 0 }) UIWarnings.INTERFACE_PAGES_SKIPPED_FIRST.warn()
-        else {
-            val overlappingPages = pages.groupBy { it.page }
+        if (pages.isEmpty()) {
+            UIWarnings.INTERFACE_PAGES_EMPTY.warn()
+        } else if (pages.none { it.page == 0 } && pages.any { it.page > 0 }) {
+            UIWarnings.INTERFACE_PAGES_SKIPPED_FIRST.warn()
+        } else {
+            val overlappingPages = pages
+                .groupBy { it.page }
                 .filter { it.value.size > 1 }
 
             if (overlappingPages.isNotEmpty()) UIWarnings.INTERFACE_PAGES_OVERLAP.warn(overlappingPages.mapValues { it.value.size })
@@ -100,15 +116,13 @@ abstract class PageInterface<T : PageInterface.PageContext>(
     }
 
     override fun getInventory(player: Player, context: T): Inventory {
-        if (pageOptions.contentRowAmount !in 1..5) {
-            throw IllegalArgumentException("Content row amount must be between 1 and 5")
+        if (pageOptions.contentRowAmount !in 1..(UIConstants.INVENTORY_MAX_ROWS - 1)) {
+            throw IllegalArgumentException("Content row amount must be between 1 and ${UIConstants.INVENTORY_MAX_ROWS - 1}")
         }
-        return Bukkit.createInventory(player, (pageOptions.contentRowAmount + 1) * 9, getInventoryName(player, context))
+        return Bukkit.createInventory(player, (pageOptions.contentRowAmount + 1) * UIConstants.ROW_SIZE, getInventoryName(player, context))
     }
 
-    open fun getInventoryName(player: Player, context: T): TextComponent {
-        return Component.text("$interfaceName #${context.page + 1}")
-    }
+    open fun getInventoryName(player: Player, context: T): TextComponent = Component.text("$interfaceName #${context.page + 1}")
 
     fun pages(block: PageListBuilder<T>.() -> Unit): List<Page<T>> {
         val builder = PageListBuilder<T>()

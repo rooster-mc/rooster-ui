@@ -42,25 +42,27 @@ open class Context
 
 interface ContextHandler<T : Context> {
     val contextClass: KClass<T>
+
     fun item() = InterfaceItem(contextClass)
+
     fun defaultContext(player: Player): T
 }
 
 object DefaultContextHandler : ContextHandler<Context> {
     override val contextClass: KClass<Context> = Context::class
+
     override fun defaultContext(player: Player) = Context()
 }
 
-fun <T : Context> KClass<T>.toHandler(defaultContext: (Player) -> T) = object : ContextHandler<T> {
-    override val contextClass: KClass<T> = this@toHandler
-    override fun defaultContext(player: Player): T = defaultContext(player)
-}
+fun <T : Context> KClass<T>.toHandler(defaultContext: (Player) -> T) =
+    object : ContextHandler<T> {
+        override val contextClass: KClass<T> = this@toHandler
+
+        override fun defaultContext(player: Player): T = defaultContext(player)
+    }
 
 fun <T : Context> KClass<T>.toHandler(defaultContext: T) = this.toHandler { defaultContext }
 
-inline fun <reified T : Context> handler(noinline default: (Player) -> T) =
-    T::class.toHandler(default)
+inline fun <reified T : Context> handler(noinline default: (Player) -> T) = T::class.toHandler(default)
 
-inline fun <reified T : Context> handler(default: T) =
-
-T::class.toHandler(default)
+inline fun <reified T : Context> handler(default: T) = T::class.toHandler(default)

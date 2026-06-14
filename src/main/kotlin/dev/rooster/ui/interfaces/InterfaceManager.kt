@@ -40,11 +40,7 @@ internal object InterfaceManager {
         return inventory
     }
 
-    fun <T : Context> getInventory(
-        targetInventory: RoosterInterface<T>,
-        context: T,
-        player: Player
-    ): Inventory {
+    fun <T : Context> getInventory(targetInventory: RoosterInterface<T>, context: T, player: Player): Inventory {
         val inventory = targetInventory.getInventory(player, context)
         for (slot in 0 until inventory.size) {
             val info = InterfaceInfo(slot, context, player)

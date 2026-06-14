@@ -9,7 +9,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 
 @Suppress("unused")
-object InterfaceListener : Listener{
+object InterfaceListener : Listener {
     @EventHandler
     fun onInventoryClick(event: InventoryClickEvent) {
         InterfaceManager.handleInventoryClick(event)

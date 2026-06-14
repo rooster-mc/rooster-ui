@@ -29,4 +29,5 @@ class Slots {
 }
 
 fun Slots?.targetsSlot(slot: Int) = this?.targetsSlot(slot) ?: true
+
 fun Slots?.targetsNullableSlot(slot: Int) = this?.targetsSlot(slot) ?: true

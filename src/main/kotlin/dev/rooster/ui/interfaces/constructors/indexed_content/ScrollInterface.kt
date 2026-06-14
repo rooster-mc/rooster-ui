@@ -1,5 +1,6 @@
 package dev.rooster.ui.interfaces.constructors.indexed_content
 
+import dev.rooster.ui.UIConstants
 import dev.rooster.ui.interfaces.Context
 import dev.rooster.ui.interfaces.ContextHandler
 import dev.rooster.ui.interfaces.Slot
@@ -17,7 +18,10 @@ open class ScrollContext(
     }
 }
 
-data class ScrollStep(val normal: Int = 1, val shift: Int = 5) {
+data class ScrollStep(
+    val normal: Int = 1,
+    val shift: Int = 5
+) {
     fun resolve(isShift: Boolean) = if (isShift) shift else normal
 }
 
@@ -38,8 +42,9 @@ sealed class ScrollerObject<ContextType : ScrollContext> {
                 "shift" to scrollStep.shift.toString()
             )
             return listOf(
-                iface.item()
-                    .atSlot(iface.contentArea.bottomRow + 8)
+                iface
+                    .item()
+                    .atSlot(iface.contentArea.bottomRow + UIConstants.MAX_COLUMN_INDEX)
                     .displayAs(Material.COMPASS, label.name, label.description)
                     .modifyContext {
                         var amount = scrollStep.resolve(event.click.isShiftClick)
@@ -61,14 +66,16 @@ sealed class ScrollerObject<ContextType : ScrollContext> {
             val labelUp = ScrollMessages.default.scrollerUp.withReplacements(*replacements)
             val labelDown = ScrollMessages.default.scrollerDown.withReplacements(*replacements)
             return listOf(
-                iface.item()
-                    .atSlot(iface.contentArea.bottomRow + 7)
+                iface
+                    .item()
+                    .atSlot(iface.contentArea.bottomRow + UIConstants.MAX_COLUMN_INDEX - 1)
                     .displayAs(Material.COMPASS, labelUp.name, labelUp.description)
                     .modifyContext {
                         context.position = (context.position - scrollStep.resolve(event.click.isShiftClick)).coerceAtLeast(0)
                     }.run(modifyUp),
-                iface.item()
-                    .atSlot(iface.contentArea.bottomRow + 8)
+                iface
+                    .item()
+                    .atSlot(iface.contentArea.bottomRow + UIConstants.MAX_COLUMN_INDEX)
                     .displayAs(Material.COMPASS, labelDown.name, labelDown.description)
                     .modifyContext {
                         context.position += scrollStep.resolve(event.click.isShiftClick)
@@ -99,8 +106,10 @@ abstract class ScrollInterface<ContextType : ScrollContext, DataType : Any>(
 
     final override fun slotToId(slot: Slot, context: ContextType, player: Player): Int? {
         val (x, y) = contentArea.offset(slot) ?: return null
-        return if (scrollOptions.scrollDirection == ScrollDirection.TOP_BOTTOM)
+        return if (scrollOptions.scrollDirection == ScrollDirection.TOP_BOTTOM) {
             x + (y + context.position) * contentArea.xWidth
-        else y + (x + context.position) * contentArea.yWidth
+        } else {
+            y + (x + context.position) * contentArea.yWidth
+        }
     }
 }

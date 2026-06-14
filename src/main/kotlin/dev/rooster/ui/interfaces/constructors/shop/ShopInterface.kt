@@ -7,13 +7,8 @@ import dev.rooster.ui.items.InterfaceItem
 class ShopInterface
 
 class ShopItem {
-    fun <T : Context> addShopAttributes(
-        item: InterfaceItem<T>,
-        costs: InterfaceInfo<T>.() -> Number
-    ) {
-
+    fun <T : Context> addShopAttributes(item: InterfaceItem<T>, costs: InterfaceInfo<T>.() -> Number) {
         item.onClick {
-
         }
     }
 }

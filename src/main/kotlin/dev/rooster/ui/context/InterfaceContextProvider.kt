@@ -19,7 +19,5 @@ abstract class InterfaceContextProvider : RoosterService {
      */
     abstract fun <T : Context> getContext(player: Player, interfaceInstance: RoosterInterface<T>): T?
 
-    override fun targetClass(): KClass<out RoosterService> {
-        return InterfaceContextProvider::class
-    }
+    override fun targetClass(): KClass<out RoosterService> = InterfaceContextProvider::class
 }

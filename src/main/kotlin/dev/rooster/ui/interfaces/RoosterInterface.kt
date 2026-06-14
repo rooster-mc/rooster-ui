@@ -1,6 +1,7 @@
 package dev.rooster.ui.interfaces
 
 import dev.rooster.ui.RoosterUI.interfaceContextProvider
+import dev.rooster.ui.UIConstants
 import dev.rooster.ui.items.InterfaceItem
 import dev.rooster.ui.items.InterfaceItemList
 import dev.rooster.ui.items.targetsNullableSlot
@@ -10,10 +11,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.inventory.Inventory
 
-
-inline fun <T : Context, reified E : RoosterInterface.RoosterInterfaceOptions<T>> options(
-    block: E.() -> Unit
-): E {
+inline fun <T : Context, reified E : RoosterInterface.RoosterInterfaceOptions<T>> options(block: E.() -> Unit): E {
     val instance = E::class.java.getDeclaredConstructor().newInstance()
     instance.block()
     return instance
@@ -29,7 +27,7 @@ abstract class RoosterInterface<T : Context>(
     contextHandler: ContextHandler<T>,
     val options: RoosterInterfaceOptions<T> = options { }
 ) : ContextHandler<T> by contextHandler {
-    open class RoosterInterfaceOptions<T : Context>() {
+    open class RoosterInterfaceOptions<T : Context> {
         // Click behaviour
         var cancelEvent: (ClickInfo<T>) -> Boolean = { true }
         var ignorePlayerInventory: Boolean = true
@@ -41,21 +39,23 @@ abstract class RoosterInterface<T : Context>(
     }
 
     private val _itemBlocks = mutableListOf<MutableList<InterfaceItem<T>>.() -> Unit>()
-    protected fun addItems(block: MutableList<InterfaceItem<T>>.() -> Unit) { _itemBlocks += block }
+
+    protected fun addItems(block: MutableList<InterfaceItem<T>>.() -> Unit) {
+        _itemBlocks += block
+    }
+
     internal fun getInterfaceListItems(): List<InterfaceItem<T>> =
         mutableListOf<InterfaceItem<T>>().also { list -> _itemBlocks.forEach { list.it() } }
 
     val items by lazy { getInterfaceItems() + getInterfaceListItems() }
-    val bottomRow by lazy { options.inventorySize.slots - 9 }
+    val bottomRow by lazy { options.inventorySize.slots - UIConstants.ROW_SIZE }
 
-
-    open fun getInventory(player: Player, context: T): Inventory {
-        return Bukkit.createInventory(
+    open fun getInventory(player: Player, context: T): Inventory =
+        Bukkit.createInventory(
             player,
             options.inventorySize.slots,
             options.inventoryTitle?.invoke(player, context) ?: Component.text(interfaceName)
         )
-    }
 
     abstract fun getInterfaceItems(): List<InterfaceItem<T>>
 
@@ -68,23 +68,16 @@ abstract class RoosterInterface<T : Context>(
         if (target != null) action(target)
     }
 
-    fun openInventory(player: Player): Inventory {
-        return openInventory(player, getCurrentContext(player) ?: defaultContext(player))
-    }
+    fun openInventory(player: Player): Inventory = openInventory(player, getCurrentContext(player) ?: defaultContext(player))
 
-    fun openInventory(player: Player, context: T): Inventory {
-        return InterfaceManager.openTargetInterface(player, this, context)
-    }
+    fun openInventory(player: Player, context: T): Inventory = InterfaceManager.openTargetInterface(player, this, context)
 
-    fun getContext(player: Player): T {
-        return interfaceContextProvider.getContext(player, this) ?: defaultContext(player)
-    }
+    fun getContext(player: Player): T = interfaceContextProvider.getContext(player, this) ?: defaultContext(player)
 
-    fun getCurrentContext(player: Player): T? {
-        return interfaceContextProvider.getContext(player, this)
-    }
+    fun getCurrentContext(player: Player): T? = interfaceContextProvider.getContext(player, this)
 
     val groupedItems = emptyMap<Player, Map<Slot, InterfaceItemList<T>>>().toMutableMap()
+
     internal fun groupedItems(player: Player): Map<Slot, InterfaceItemList<T>> {
         val cachedItems = groupedItems[player]
         if (cachedItems != null) return cachedItems
@@ -93,7 +86,7 @@ abstract class RoosterInterface<T : Context>(
             .mapNotNull { it.slots }
             .flatMap { it.slots.toList() }
             .maxOrNull() ?: 0
-        if (maxSlot < 6 * 9) maxSlot = 6 * 9
+        if (maxSlot < UIConstants.INVENTORY_MAX_SLOTS) maxSlot = UIConstants.INVENTORY_MAX_SLOTS
 
         val map = mutableMapOf<Slot, InterfaceItemList<T>>()
         for (i in 0..maxSlot) {

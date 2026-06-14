@@ -12,7 +12,9 @@ import org.bukkit.inventory.meta.SkullMeta
 import java.util.UUID
 
 @JvmInline
-value class CustomHead(val textureValue: String) {
+value class CustomHead(
+    val textureValue: String
+) {
     private fun applyTexture(meta: SkullMeta) {
         val profile = Bukkit.createProfile(UUID.randomUUID())
         profile.setProperty(ProfileProperty("textures", textureValue))

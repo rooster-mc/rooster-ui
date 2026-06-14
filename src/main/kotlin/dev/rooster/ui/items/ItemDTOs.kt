@@ -21,17 +21,11 @@ class ConditionMap<T : Context> {
     private var conditionMap: MutableMap<String, ((InterfaceInfo<T>) -> Boolean)> = mutableMapOf()
     private val clazz: KClass<T>
 
-    fun add(
-        condition: InterfaceInfo<T>.() -> Boolean,
-        key: String = ANONYMOUS_KEY,
-    ) {
+    fun add(condition: InterfaceInfo<T>.() -> Boolean, key: String = ANONYMOUS_KEY,) {
         conditionMap[nextName(key, conditionMap.keys.toList())] = { it: InterfaceInfo<T> -> condition(it) }
     }
 
-    fun set(
-        condition: InterfaceInfo<T>.() -> Boolean,
-        key: String = ANONYMOUS_KEY,
-    ) {
+    fun set(condition: InterfaceInfo<T>.() -> Boolean, key: String = ANONYMOUS_KEY,) {
         conditionMap[key] = condition
     }
 
@@ -42,15 +36,21 @@ class ConditionMap<T : Context> {
     }
 
     val flattend by lazy {
-        if (conditionMap.values.count() == 0) { _: InterfaceInfo<T> -> true }
-        else { info: InterfaceInfo<T> -> conditionMap.values.all { condition -> condition(info) } }
+        if (conditionMap.values.count() == 0) {
+            { _: InterfaceInfo<T> -> true }
+        } else {
+            { info: InterfaceInfo<T> -> conditionMap.values.all { condition -> condition(info) } }
+        }
     }
 
     fun getMap(): Map<String, ((InterfaceInfo<T>) -> Boolean)> = conditionMap
+
     fun copy(): ConditionMap<T> = ConditionMap<T>(conditionMap, clazz)
 }
 
-class InterfaceItemList<T : Context>(itemStackList: List<InterfaceItem<T>>) {
+class InterfaceItemList<T : Context>(
+    itemStackList: List<InterfaceItem<T>>
+) {
     val get: (InterfaceInfo<T>) -> InterfaceItem<T>?
 
     init {
@@ -66,19 +66,25 @@ class InterfaceItemList<T : Context>(itemStackList: List<InterfaceItem<T>>) {
         val maxPriorityConditionless = conditionLess.maxByOrNull { it.staticPriority!! }
 
         if (dynamicItemsCount == 0) {
-            if (staticItemsCount == 0) get = { null }
-            else if (staticItemsCount == 1) {
+            if (staticItemsCount == 0) {
+                get = { null }
+            } else if (staticItemsCount == 1) {
                 val only = staticItems.first()
-                if (only.condition.getMap().count() == 0) get = { only }
-                else get = { if (only.condition.flattend(it)) only else null }
+                if (only.condition.getMap().count() == 0) {
+                    get = { only }
+                } else {
+                    get = { if (only.condition.flattend(it)) only else null }
+                }
             } else {
 
                 if (conditionBasedCount == 0) {
                     get = { maxPriorityConditionless }
                 } else {
-                    if (maxPriorityConditionless != null && maxPriorityConditionless.staticPriority!! > maxPriority!!.staticPriority!!) get =
-                        { maxPriorityConditionless }
-                    else {
+                    if (maxPriorityConditionless != null &&
+                        maxPriorityConditionless.staticPriority!! > maxPriority!!.staticPriority!!) {
+                        get =
+                            { maxPriorityConditionless }
+                    } else {
                         val list = conditionBased.toMutableList()
                         if (maxPriorityConditionless != null) list.add(maxPriorityConditionless)
                         list.sortBy { it.staticPriority }
@@ -86,11 +92,11 @@ class InterfaceItemList<T : Context>(itemStackList: List<InterfaceItem<T>>) {
                     }
                 }
             }
-
         } else {
             val usableList = mutableListOf<InterfaceItem<T>>()
-            if (conditionBasedCount == 0 && maxPriorityConditionless != null) usableList.add(maxPriorityConditionless)
-            else {
+            if (conditionBasedCount == 0 && maxPriorityConditionless != null) {
+                usableList.add(maxPriorityConditionless)
+            } else {
                 if (maxPriorityConditionless != null) usableList.add(maxPriorityConditionless)
                 usableList.addAll(conditionBased)
             }
@@ -119,9 +125,8 @@ fun appendNumber(name: String): String {
     }
 }
 
-fun nextName(name: String, list: List<String>): String {
-    return when {
+fun nextName(name: String, list: List<String>): String =
+    when {
         list.contains(name) -> appendNumber(name)
         else -> name
     }
-}

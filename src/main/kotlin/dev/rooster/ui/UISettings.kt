@@ -24,12 +24,21 @@ enum class UIWarnings(
     }, INTERFACE_PAGES);
 
     constructor(vararg parents: UIWarnings) : this(warningMethod = { "" }, parents = parents.toList())
-    constructor(defaultValue: Boolean, vararg parents: UIWarnings) : this(warningMethod = { "" }, defaultValue = defaultValue, parents = parents.toList())
+    constructor(
+        defaultValue: Boolean,
+        vararg parents: UIWarnings
+    ) : this(warningMethod = { "" }, defaultValue = defaultValue, parents = parents.toList())
     constructor(method: (Any) -> String, vararg parents: UIWarnings) : this(warningMethod = method, parents = parents.toList())
-    constructor(defaultValue: Boolean, method: (Any) -> String, vararg parents: UIWarnings) : this(warningMethod = method, defaultValue = defaultValue, parents = parents.toList())
+    constructor(
+        defaultValue: Boolean,
+        method: (Any) -> String,
+        vararg parents: UIWarnings
+    ) : this(warningMethod = method, defaultValue = defaultValue, parents = parents.toList())
 
     override fun disable() = UISettings.setWarningOption(this, false)
+
     override fun enable() = UISettings.setWarningOption(this, true)
+
     internal fun warn(obj: Any = -1) = warnScaffold(this.name, RoosterUI.logger, UISettings, obj)
 }
 

@@ -1,5 +1,6 @@
 package dev.rooster.ui.interfaces.constructors.confirmation
 
+import dev.rooster.ui.UIConstants
 import dev.rooster.ui.interfaces.ClickInfo
 import dev.rooster.ui.interfaces.Context
 import dev.rooster.ui.interfaces.ContextHandler
@@ -25,7 +26,7 @@ abstract class BaseConfirmationInterface<T : Context>(
 
     private val confirmationItem
         get() = item()
-            .atSlot(8)
+            .atSlot(UIConstants.MAX_COLUMN_INDEX)
             .displayAs(Material.GREEN_STAINED_GLASS_PANE, ConfirmationMessages.default.confirm)
             .onClick(onConfirm)
 
@@ -36,6 +37,7 @@ abstract class BaseConfirmationInterface<T : Context>(
             .onClick { onCancel(CancelInfo.fromClick(this)) }
 
     abstract fun getOtherItems(): List<InterfaceItem<T>>
+
     override fun getInterfaceItems(): List<InterfaceItem<T>> {
         val list = mutableListOf(
             baseConfirmationOptions.modifyConfirmationItem(confirmationItem),

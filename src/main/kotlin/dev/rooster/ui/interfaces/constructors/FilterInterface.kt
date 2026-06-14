@@ -6,6 +6,7 @@ import dev.rooster.ui.interfaces.RoosterInterface
 import dev.rooster.ui.items.InterfaceItem
 
 // TODO: Finish this
+
 /** Interface not finished, don't use! */
 abstract class FilterInterface<T : FilterInterface.FilterContext>(
     override var interfaceName: String,

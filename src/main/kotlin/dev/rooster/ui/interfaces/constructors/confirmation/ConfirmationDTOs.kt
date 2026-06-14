@@ -25,12 +25,11 @@ class CancelInfo<T : Context>(
     var context: T
 ) {
     companion object {
-        fun <T : Context> fromClick(info: ClickInfo<T>): CancelInfo<T> {
-            return CancelInfo(
+        fun <T : Context> fromClick(info: ClickInfo<T>): CancelInfo<T> =
+            CancelInfo(
                 CancelEvent(info.event, info.click),
                 info.clickedInterface as BaseConfirmationInterface<T>,
                 info.context
             )
-        }
     }
 }

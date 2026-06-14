@@ -6,8 +6,10 @@ import dev.rooster.ui.interfaces.Context
 import dev.rooster.ui.interfaces.RoosterInterface
 import org.bukkit.entity.Player
 
-//TODO: Save context to multiple ymls, not all in one file
-class YmlInterfaceContextProvider : InterfaceContextProvider(), YmlOperations by YmlShell("interfaceContexts.yml") {
+// TODO: Save context to multiple ymls, not all in one file
+class YmlInterfaceContextProvider :
+    InterfaceContextProvider(),
+    YmlOperations by YmlShell("interfaceContexts.yml") {
     override fun <T : Context> updateContext(player: Player, interfaceInstance: RoosterInterface<T>, context: T) {
         changeConfig {
             config.set("Players.${player.uuid()}.${interfaceInstance.interfaceName}", Gson().toJson(context))

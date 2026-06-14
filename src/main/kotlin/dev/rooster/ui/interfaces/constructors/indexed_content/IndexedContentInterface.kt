@@ -1,5 +1,6 @@
 package dev.rooster.ui.interfaces.constructors.indexed_content
 
+import dev.rooster.ui.UIConstants
 import dev.rooster.ui.interfaces.*
 import dev.rooster.ui.items.InterfaceItem
 import org.bukkit.Material
@@ -20,10 +21,9 @@ abstract class IndexedContentInterface<ContextType : Context, IdType : Any, Data
     contextHandler: ContextHandler<ContextType>,
     indexedContentOptions: IndexedContentOptions<ContextType> = IndexedContentOptions()
 ) : RoosterInterface<ContextType>(interfaceName, contextHandler, indexedContentOptions),
-    ContentProvidable<ContextType, IdType, DataType>
-{
+    ContentProvidable<ContextType, IdType, DataType> {
     open class IndexedContentOptions<T : Context> : RoosterInterfaceOptions<T>() {
-        var contentArea: ContentArea = ContentArea.fromRows(5)
+        var contentArea: ContentArea = ContentArea.fromRows(UIConstants.INVENTORY_MAX_ROWS - 1)
 
         var modifyContentItem: InterfaceItem<T>.() -> InterfaceItem<T> = { this }
         var modifyClickInArea: InterfaceItem<T>.() -> InterfaceItem<T> = { this }
@@ -38,24 +38,21 @@ abstract class IndexedContentInterface<ContextType : Context, IdType : Any, Data
             .usedWhen {
                 val data = dataFromPosition(slot, context, player)
                 data != null
-            }
-            .displayAs {
+            }.displayAs {
                 val data = dataFromPosition(slot, context, player)!!
                 contentDisplay(data, context).invoke(this)
-            }
-            .onClick {
+            }.onClick {
                 val data = dataFromPosition(click.slot, context, click.player)!!
                 contentClick(data, context).invoke(this)
             }
 
     private val clickInArea
         get() = item()
-            .atSlots((0..(6 * 9)) - contentArea.allValidSlots().toSet())
+            .atSlots((0..UIConstants.INVENTORY_MAX_SLOTS) - contentArea.allValidSlots().toSet())
             .usedWhen {
                 val dataExists = dataFromPosition(slot, context, player) != null
                 !dataExists
-            }
-            .displayAs(ItemStack(Material.AIR))
+            }.displayAs(ItemStack(Material.AIR))
             .priority(-1)
             .onClick { }
 
@@ -67,9 +64,11 @@ abstract class IndexedContentInterface<ContextType : Context, IdType : Any, Data
     }
 
     abstract fun contentDisplay(data: DataType, context: ContextType): InterfaceInfo<ContextType>.() -> ItemStack
+
     abstract fun contentClick(data: DataType, context: ContextType): ClickInfo<ContextType>.() -> Unit
 
     abstract fun slotToId(slot: Slot, context: ContextType, player: Player): IdType?
+
     protected fun dataFromPosition(slot: Int, context: ContextType, player: Player): DataType? {
         val absoluteSlot = slotToId(slot, context, player) ?: return null
         return contentProvider(absoluteSlot, context)

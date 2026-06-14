@@ -2,6 +2,7 @@ package dev.rooster.ui.items
 
 import dev.rooster.core.message.Message
 import dev.rooster.core.util.createItem
+import dev.rooster.ui.UIConstants
 import dev.rooster.ui.interfaces.ClickInfo
 import dev.rooster.ui.interfaces.Context
 import dev.rooster.ui.interfaces.InterfaceInfo
@@ -65,7 +66,7 @@ class InterfaceItem<T : Context> {
 
     fun atSlot(row: Int, slot: Int) =
         copy {
-            this.slots = Slots((row - 1) * 9 + slot)
+            this.slots = Slots((row - 1) * UIConstants.ROW_SIZE + slot)
         }
 
     fun atSlots(vararg slots: Int) = atSlots(slots.toList())

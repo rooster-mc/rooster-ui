@@ -1,10 +1,14 @@
 package dev.rooster.ui.interfaces
 
-data class InventorySize(val slots: Int) {
+import dev.rooster.ui.UIConstants
+
+data class InventorySize(
+    val slots: Int
+) {
     companion object {
         fun fromRows(rows: Int): InventorySize {
-            require(rows in 1..6) { "Inventory rows must be between 1 and 6" }
-            return InventorySize(rows * 9)
+            require(rows in 1..UIConstants.INVENTORY_MAX_ROWS) { "Inventory rows must be between 1 and ${UIConstants.INVENTORY_MAX_ROWS}" }
+            return InventorySize(rows * UIConstants.ROW_SIZE)
         }
 
         val ONE_ROW by lazy { fromRows(1) }

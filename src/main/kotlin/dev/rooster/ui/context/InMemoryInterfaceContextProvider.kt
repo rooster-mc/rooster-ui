@@ -13,7 +13,6 @@ class InMemoryInterfaceContextProvider : InterfaceContextProvider() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Context> getContext(player: Player, interfaceInstance: RoosterInterface<T>): T? {
-        return store[player.uniqueId to interfaceInstance.interfaceName] as T?
-    }
+    override fun <T : Context> getContext(player: Player, interfaceInstance: RoosterInterface<T>): T? =
+        store[player.uniqueId to interfaceInstance.interfaceName] as T?
 }
