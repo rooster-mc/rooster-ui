@@ -45,3 +45,4 @@ bin/
 .DS_Store
 /DemoPlugin/run/
 /.idea
+/kls_database.db
