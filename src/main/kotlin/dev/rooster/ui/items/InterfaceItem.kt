@@ -23,7 +23,7 @@ class InterfaceItem<T : Context> {
     internal var slots: Slots? = null
     internal var condition: ConditionMap<T>
 
-    internal var priority: (InterfaceInfo<T>.() -> Int) = { -1 }
+    internal var priority: (InterfaceInfo<T>.() -> Int) = { 0 }
     internal var staticPriority: Int? = null
 
     internal var displayItem: (InterfaceInfo<T>.() -> ItemStack) = { createItem(Material.AIR) }

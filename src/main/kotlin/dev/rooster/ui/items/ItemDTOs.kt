@@ -87,7 +87,7 @@ class InterfaceItemList<T : Context>(
                     } else {
                         val list = conditionBased.toMutableList()
                         if (maxPriorityConditionless != null) list.add(maxPriorityConditionless)
-                        list.sortBy { it.staticPriority }
+                        list.sortByDescending { it.staticPriority }
                         get = { info -> list.firstOrNull { it.condition.flattend(info) } }
                     }
                 }
@@ -107,7 +107,7 @@ class InterfaceItemList<T : Context>(
                 if (maxPriorityDynamic!!.second < (maxPriorityConditionless?.staticPriority ?: -1)) {
                     maxPriorityConditionless
                 } else {
-                    val list = (solvedPriority + mappedStatic).sortedBy { it.second }
+                    val list = (solvedPriority + mappedStatic).sortedByDescending { it.second }
                     list.firstOrNull { it.first.condition.flattend(info) }?.first
                 }
             }
