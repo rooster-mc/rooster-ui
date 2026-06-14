@@ -48,7 +48,7 @@ abstract class IndexedContentInterface<ContextType : Context, IdType : Any, Data
 
     private val clickInArea
         get() = item()
-            .atSlots((0..UIConstants.INVENTORY_MAX_SLOTS) - contentArea.allValidSlots().toSet())
+            .atSlots(contentArea.allValidSlots())
             .usedWhen {
                 val dataExists = dataFromPosition(slot, context, player) != null
                 !dataExists
