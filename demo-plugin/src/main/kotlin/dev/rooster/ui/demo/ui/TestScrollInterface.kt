@@ -15,7 +15,7 @@ class Entry(
 )
 
 object TestScrollInterface :
-    ScrollInterface<ScrollContext, Entry>("test-scroll", ScrollContext.defaultHandler) {
+    ScrollInterface<ScrollContext, Entry>(ScrollContext.defaultHandler) {
     val list = mutableListOf(
         Entry("Robert", Material.DIAMOND),
         Entry("Peter", Material.BAKED_POTATO),

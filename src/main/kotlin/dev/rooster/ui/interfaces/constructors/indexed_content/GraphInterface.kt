@@ -11,10 +11,9 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 
 abstract class GraphInterface<ContextType : GraphInterface.GraphContext, DataType : Any>(
-    override val interfaceName: String,
     contextHandler: ContextHandler<ContextType>,
     val graphOptions: GraphOptions<ContextType> = options { }
-) : IndexedContentInterface<ContextType, Pair<Int, Int>, DataType>(interfaceName, contextHandler, graphOptions) {
+) : IndexedContentInterface<ContextType, Pair<Int, Int>, DataType>(contextHandler, graphOptions) {
     class GraphOptions<T : Context> : IndexedContentOptions<T>() {
         var modifyVerticalPager: InterfaceItem<T>.() -> InterfaceItem<T> = { this }
         var modifyHorizontalPager: InterfaceItem<T>.() -> InterfaceItem<T> = { this }

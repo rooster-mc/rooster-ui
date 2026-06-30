@@ -17,10 +17,9 @@ fun <T : Context> IndexedContentInterface.IndexedContentOptions<T>.sizeFromRows(
 }
 
 abstract class IndexedContentInterface<ContextType : Context, IdType : Any, DataType : Any>(
-    interfaceName: InterfaceName,
     contextHandler: ContextHandler<ContextType>,
     indexedContentOptions: IndexedContentOptions<ContextType> = IndexedContentOptions()
-) : RoosterInterface<ContextType>(interfaceName, contextHandler, indexedContentOptions),
+) : RoosterInterface<ContextType>(contextHandler, indexedContentOptions),
     ContentProvidable<ContextType, IdType, DataType> {
     open class IndexedContentOptions<T : Context> : RoosterInterfaceOptions<T>() {
         var contentArea: ContentArea = ContentArea.fromRows(UIConstants.INVENTORY_MAX_ROWS - 1)

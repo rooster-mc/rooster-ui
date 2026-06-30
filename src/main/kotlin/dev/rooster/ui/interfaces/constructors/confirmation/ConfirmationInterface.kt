@@ -14,10 +14,9 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 
 abstract class ConfirmationInterface(
-    override val interfaceName: String,
     override val onConfirm: (ClickInfo<Context>) -> Unit,
     override val onCancel: (CancelInfo<Context>) -> Unit,
-) : BaseConfirmationInterface<Context>(interfaceName, DefaultContextHandler, onConfirm, onCancel) {
+) : BaseConfirmationInterface<Context>(DefaultContextHandler, onConfirm, onCancel) {
     open fun getInventoryName(player: Player, context: Context): Component = ConfirmationMessages.default.title.resolve(player)
 
     override fun getInventory(player: Player, context: Context): Inventory =

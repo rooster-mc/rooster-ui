@@ -30,7 +30,7 @@ class SqlInterfaceContextProvider : InterfaceContextProvider() {
 
     object InterfaceContexts : IntIdTable("RoosterInterfaceContexts") {
         val playerUUID = varchar("player_uuid", 50)
-        val interfaceName = varchar("interface_name", 50)
+        val interfaceName = varchar("interface_name", 255)
         val content = text("content")
     }
 

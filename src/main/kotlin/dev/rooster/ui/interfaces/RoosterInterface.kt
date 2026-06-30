@@ -23,10 +23,10 @@ inline fun <T : Context, reified E : RoosterInterface.RoosterInterfaceOptions<T>
  * field [interfaceName] is the key connected to the particular Interface.
  */
 abstract class RoosterInterface<T : Context>(
-    open val interfaceName: String,
     contextHandler: ContextHandler<T>,
     val options: RoosterInterfaceOptions<T> = options { }
 ) : ContextHandler<T> by contextHandler {
+    open val interfaceName: String = this.javaClass.name
     open class RoosterInterfaceOptions<T : Context> {
         // Click behaviour
         var cancelEvent: (ClickInfo<T>) -> Boolean = { true }

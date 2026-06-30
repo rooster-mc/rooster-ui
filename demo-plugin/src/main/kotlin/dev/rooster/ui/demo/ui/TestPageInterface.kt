@@ -5,7 +5,7 @@ import dev.rooster.ui.interfaces.constructors.DefaultPageInterface
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
-object TestPageInterface : DefaultPageInterface("test-page") {
+object TestPageInterface : DefaultPageInterface() {
     val test = item().atSlot(4).displayAs(createItem(Material.DIAMOND)).onClick {
         click.player.sendMessage("test")
     }

@@ -6,7 +6,7 @@ import dev.rooster.ui.items.InterfaceItem
 import dev.rooster.ui.interfaces.Context
 import org.bukkit.Material
 
-object TestInterface : NoContextInterface("test") {
+object TestInterface : NoContextInterface() {
     val test = item().atSlot(4).displayAs(createItem(Material.DIAMOND)).onClick {
         click.player.sendMessage("test")
     }

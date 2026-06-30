@@ -91,10 +91,9 @@ open class ScrollInterfaceOptions<T : ScrollContext> : IndexedContentInterface.I
 }
 
 abstract class ScrollInterface<ContextType : ScrollContext, DataType : Any>(
-    override var interfaceName: String,
     contextHandler: ContextHandler<ContextType>,
     val scrollOptions: ScrollInterfaceOptions<ContextType> = ScrollInterfaceOptions()
-) : IndexedContentInterface<ContextType, Int, DataType>(interfaceName, contextHandler, scrollOptions) {
+) : IndexedContentInterface<ContextType, Int, DataType>(contextHandler, scrollOptions) {
     enum class ScrollDirection {
         TOP_BOTTOM,
         LEFT_RIGHT

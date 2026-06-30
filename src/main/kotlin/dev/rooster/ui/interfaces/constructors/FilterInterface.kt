@@ -9,9 +9,8 @@ import dev.rooster.ui.items.InterfaceItem
 
 /** Interface not finished, don't use! */
 abstract class FilterInterface<T : FilterInterface.FilterContext>(
-    override var interfaceName: String,
     contextHandler: ContextHandler<T>,
-) : RoosterInterface<T>(interfaceName, contextHandler) {
+) : RoosterInterface<T>(contextHandler) {
     abstract class FilterContext(
         val filter: MutableMap<String, Any?>
     ) : Context()

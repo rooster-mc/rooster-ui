@@ -17,15 +17,13 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 
 abstract class DefaultPageInterface(
-    interfaceName: String,
     pageOptions: PageInterfaceOptions<PageContext> = PageInterfaceOptions<PageContext>()
-) : PageInterface<PageInterface.PageContext>(interfaceName, PageContext.defaultHandler, pageOptions)
+) : PageInterface<PageInterface.PageContext>(PageContext.defaultHandler, pageOptions)
 
 abstract class PageInterface<T : PageInterface.PageContext>(
-    override val interfaceName: String,
     contextHandler: ContextHandler<T>,
     pageOptions: PageInterfaceOptions<T> = PageInterfaceOptions<T>()
-) : RoosterInterface<T>(interfaceName, contextHandler, pageOptions) {
+) : RoosterInterface<T>(contextHandler, pageOptions) {
     // TODO: Handle different Page Turners
     open class PageInterfaceOptions<T : Context> : RoosterInterfaceOptions<T>() {
         var pageTurnerModifier: (InterfaceItem<T>) -> InterfaceItem<T> = { it }

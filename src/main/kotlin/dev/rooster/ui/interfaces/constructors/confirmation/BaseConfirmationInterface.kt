@@ -13,12 +13,11 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryCloseEvent
 
 abstract class BaseConfirmationInterface<T : Context>(
-    override val interfaceName: String,
     contextHandler: ContextHandler<T>,
     open val onConfirm: (ClickInfo<T>) -> Unit,
     open val onCancel: (CancelInfo<T>) -> Unit,
     val baseConfirmationOptions: BaseConfirmationOptions<T> = options { }
-) : RoosterInterface<T>(interfaceName, contextHandler) {
+) : RoosterInterface<T>(contextHandler) {
     class BaseConfirmationOptions<T : Context> : RoosterInterfaceOptions<T>() {
         var modifyConfirmationItem: InterfaceItem<T>.() -> InterfaceItem<T> = { this }
         var modifyCancelItem: InterfaceItem<T>.() -> InterfaceItem<T> = { this }
