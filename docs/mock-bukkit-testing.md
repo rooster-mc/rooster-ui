@@ -75,9 +75,9 @@ or make `init` idempotent, otherwise interfaces accumulate across tests in the s
 
 - **`TestInterface`**: after `openInventory(player)`, tick the scheduler and assert the top
   inventory has `DIAMOND` at slot 4 and `AIR` elsewhere.
-- **Click**: simulate a click on slot 4 (via MockBukkit's click simulation or a manually
-  constructed `InventoryClickEvent` fired through `server.pluginManager.callEvent(...)`) and
-  assert `player.nextMessage()` contains the expected text.
+- **Click**: simulate a click on slot 4 via `PlayerSimulation(player).simulateInventoryClick(...)`
+  (the `PlayerMock.simulateInventoryClick` wrappers are deprecated; `PlayerSimulation` is the
+  non-deprecated path) and assert the sent component via `player.nextComponentMessage()`.
 - **`TestScrollInterface`**: open, assert the content area reflects `list2` from position 0;
   simulate a scroll click, assert `context.position` changed and the re-rendered content
   shifted.

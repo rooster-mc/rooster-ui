@@ -6,6 +6,7 @@ import dev.rooster.ui.interfaces.ClickInfo
 import dev.rooster.ui.interfaces.InterfaceInfo
 import dev.rooster.ui.interfaces.constructors.indexed_content.ScrollContext
 import dev.rooster.ui.interfaces.constructors.indexed_content.ScrollInterface
+import dev.rooster.ui.items.InterfaceItem
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -46,4 +47,5 @@ object TestScrollInterface :
         return list2.getOrNull(id)
     }
 
+    override fun getInterfaceItems(): List<InterfaceItem<ScrollContext>> = emptyList()
 }
