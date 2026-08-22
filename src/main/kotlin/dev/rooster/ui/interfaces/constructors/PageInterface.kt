@@ -9,6 +9,7 @@ import dev.rooster.ui.interfaces.RoosterInterface
 import dev.rooster.ui.interfaces.constructors.PageInterface.Page
 import dev.rooster.ui.interfaces.handler
 import dev.rooster.ui.items.InterfaceItem
+import dev.rooster.ui.tracking.track
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.Bukkit
@@ -39,8 +40,10 @@ abstract class PageInterface<T : PageInterface.PageContext>(
     }
 
     open class PageContext(
-        open var page: Int = 0
+        initialPage: Int = 0
     ) : Context() {
+        var page by track(initialPage)
+
         companion object {
             val defaultHandler = handler { PageContext() }
         }

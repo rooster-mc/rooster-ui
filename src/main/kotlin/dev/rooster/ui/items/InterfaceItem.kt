@@ -7,6 +7,7 @@ import dev.rooster.ui.interfaces.ClickInfo
 import dev.rooster.ui.interfaces.Context
 import dev.rooster.ui.interfaces.InterfaceInfo
 import dev.rooster.ui.interfaces.RoosterInterface
+import dev.rooster.ui.tracking.CachableLambda
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
@@ -23,10 +24,10 @@ class InterfaceItem<T : Context> {
     internal var slots: Slots? = null
     internal var condition: ConditionMap<T>
 
-    internal var priority: (InterfaceInfo<T>.() -> Int) = { 0 }
+    internal var priority: CachableLambda<T, Int> = CachableLambda(0)
     internal var staticPriority: Int? = null
 
-    internal var displayItem: (InterfaceInfo<T>.() -> ItemStack) = { createItem(Material.AIR) }
+    internal var displayItem: CachableLambda<T, ItemStack> = CachableLambda { createItem(Material.AIR) }
 
     internal var onClick: (ClickInfo<T>.() -> Unit)? = null
     private var contextModifier: (ClickInfo<T>.() -> Unit)? = null
@@ -87,13 +88,13 @@ class InterfaceItem<T : Context> {
 
     fun priority(priority: InterfaceInfo<T>.() -> Int,): InterfaceItem<T> =
         copy {
-            this.priority = { it: InterfaceInfo<T> -> priority(it) }
+            this.priority = CachableLambda(priority)
             this.staticPriority = null
         }
 
     fun priority(priority: Int): InterfaceItem<T> =
         copy {
-            this.priority = { priority }
+            this.priority = CachableLambda(priority)
             this.staticPriority = priority
         }
 
@@ -131,9 +132,9 @@ class InterfaceItem<T : Context> {
             }
         }
 
-    fun displayAs(itemStackCreator: InterfaceInfo<T>.() -> ItemStack) = copy { this.displayItem = itemStackCreator }
+    fun displayAs(itemStackCreator: InterfaceInfo<T>.() -> ItemStack) = copy { this.displayItem = CachableLambda(itemStackCreator) }
 
-    fun displayAs(itemStack: ItemStack): InterfaceItem<T> = copy { this.displayItem = { itemStack } }
+    fun displayAs(itemStack: ItemStack): InterfaceItem<T> = copy { this.displayItem = CachableLambda(itemStack) }
 
     fun displayAs(
         material: Material,

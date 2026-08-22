@@ -1,19 +1,47 @@
 package dev.rooster.ui.interfaces
 
 import dev.rooster.ui.items.InterfaceItem
+import dev.rooster.ui.tracking.ContextDependency
+import dev.rooster.ui.tracking.PlayerDependency
+import dev.rooster.ui.tracking.SlotDependency
+import dev.rooster.ui.tracking.TrackedProperty
+import dev.rooster.ui.tracking.Tracker
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
+import java.lang.reflect.Field
 import kotlin.reflect.KClass
 
 typealias Slot = Int
 
-data class InterfaceInfo<T : Context>(
-    val slot: Slot,
-    val context: T,
+class InterfaceInfo<T : Context>(
+    slot: Slot,
+    context: T,
+    player: Player
+) {
+    private val _slot = slot
+    private val _context = context
+    private val _player = player
+
+    val slot: Slot
+        get() {
+            Tracker.record(SlotDependency(_slot))
+            return _slot
+        }
+
+    val context: T
+        get() {
+            Tracker.record(ContextDependency(_context))
+            return _context
+        }
+
     val player: Player
-)
+        get() {
+            Tracker.record(PlayerDependency(_player.uniqueId))
+            return _player
+        }
+}
 
 data class ClickInfo<T : Context>(
     val click: Click,
@@ -38,7 +66,32 @@ data class Click(
  * four your interface. Basically some sort of value that is being
  * saved in between clicks, to save the current state of the interface.
  */
-open class Context
+open class Context {
+    fun trackedValues(): Map<String, Any?> =
+        trackedPropertyFields().mapValues { (_, field) -> (field.get(this) as TrackedProperty<*>).current }
+
+    fun restoreTrackedValues(values: Map<String, Any?>) {
+        val fields = trackedPropertyFields()
+        values.forEach { (name, value) ->
+            if (value != null) (fields[name]?.get(this) as? TrackedProperty<*>)?.restore(value)
+        }
+    }
+
+    private fun trackedPropertyFields(): Map<String, Field> {
+        val result = LinkedHashMap<String, Field>()
+        var clazz: Class<*>? = javaClass
+        while (clazz != null && clazz != Any::class.java) {
+            clazz.declaredFields.forEach { field ->
+                if (TrackedProperty::class.java.isAssignableFrom(field.type)) {
+                    field.isAccessible = true
+                    result.putIfAbsent(field.name.removeSuffix("\$delegate"), field)
+                }
+            }
+            clazz = clazz.superclass
+        }
+        return result
+    }
+}
 
 interface ContextHandler<T : Context> {
     val contextClass: KClass<T>

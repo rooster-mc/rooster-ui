@@ -2,10 +2,11 @@ package dev.rooster.ui.items
 
 import dev.rooster.ui.interfaces.Context
 import dev.rooster.ui.interfaces.InterfaceInfo
+import dev.rooster.ui.tracking.CachableLambda
 import kotlin.reflect.KClass
 
 class ConditionMap<T : Context> {
-    private constructor(map: Map<String, ((InterfaceInfo<T>) -> Boolean)>, clazz: KClass<T>) {
+    private constructor(map: Map<String, CachableLambda<T, Boolean>>, clazz: KClass<T>) {
         this.conditionMap = map.toMutableMap()
         this.clazz = clazz
     }
@@ -18,15 +19,15 @@ class ConditionMap<T : Context> {
         const val ANONYMOUS_KEY = "ANONYMOUS"
     }
 
-    private var conditionMap: MutableMap<String, ((InterfaceInfo<T>) -> Boolean)> = mutableMapOf()
+    private var conditionMap: MutableMap<String, CachableLambda<T, Boolean>> = mutableMapOf()
     private val clazz: KClass<T>
 
     fun add(condition: InterfaceInfo<T>.() -> Boolean, key: String = ANONYMOUS_KEY,) {
-        conditionMap[nextName(key, conditionMap.keys.toList())] = { it: InterfaceInfo<T> -> condition(it) }
+        conditionMap[nextName(key, conditionMap.keys.toList())] = CachableLambda(condition)
     }
 
     fun set(condition: InterfaceInfo<T>.() -> Boolean, key: String = ANONYMOUS_KEY,) {
-        conditionMap[key] = condition
+        conditionMap[key] = CachableLambda(condition)
     }
 
     fun resetConditions(excludingConditionKeys: List<String>) {
@@ -43,7 +44,7 @@ class ConditionMap<T : Context> {
         }
     }
 
-    fun getMap(): Map<String, ((InterfaceInfo<T>) -> Boolean)> = conditionMap
+    fun getMap(): Map<String, CachableLambda<T, Boolean>> = conditionMap
 
     fun copy(): ConditionMap<T> = ConditionMap<T>(conditionMap, clazz)
 }

@@ -7,12 +7,15 @@ import dev.rooster.ui.interfaces.Slot
 import dev.rooster.ui.interfaces.handler
 import dev.rooster.ui.items.InterfaceItem
 import dev.rooster.ui.messages.ScrollMessages
+import dev.rooster.ui.tracking.track
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
 open class ScrollContext(
-    open var position: Int = 0
+    initialPosition: Int = 0
 ) : Context() {
+    var position by track(initialPosition)
+
     companion object {
         val defaultHandler = handler { ScrollContext() }
     }

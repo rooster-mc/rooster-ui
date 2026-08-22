@@ -7,6 +7,7 @@ import dev.rooster.ui.interfaces.ContextHandler
 import dev.rooster.ui.interfaces.Slot
 import dev.rooster.ui.interfaces.options
 import dev.rooster.ui.items.InterfaceItem
+import dev.rooster.ui.tracking.track
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
@@ -20,8 +21,10 @@ abstract class GraphInterface<ContextType : GraphInterface.GraphContext, DataTyp
     }
 
     open class GraphContext(
-        open var position: Pair<Int, Int> = 0 to 0
-    ) : Context()
+        initialPosition: Pair<Int, Int> = 0 to 0
+    ) : Context() {
+        var position by track(initialPosition)
+    }
 
     private val verticalPager
         get() = item()
