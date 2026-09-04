@@ -58,7 +58,7 @@ internal object InterfaceManager {
         val targetInterface = currentInterface(player) ?: return
 
         if (event.currentItem == null && targetInterface.options.ignoreEmptySlots) return
-        if (event.inventory is PlayerInventory && targetInterface.options.ignorePlayerInventory) return
+        if (event.clickedInventory is PlayerInventory && targetInterface.options.ignorePlayerInventory) return
 
         val click = Click(event, player, event.currentItem, event.currentItem?.type, event.slot)
 
