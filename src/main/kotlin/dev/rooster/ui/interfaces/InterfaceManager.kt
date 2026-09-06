@@ -48,8 +48,7 @@ internal object InterfaceManager {
         return inventory
     }
 
-    fun currentInterface(player: Player): RoosterInterface<*>? =
-        cache.getIfPresent(CURRENT_INTERFACE_KEY, player) as RoosterInterface<*>?
+    fun currentInterface(player: Player): RoosterInterface<*>? = cache.getIfPresent(CURRENT_INTERFACE_KEY, player) as RoosterInterface<*>?
 
     fun handleInventoryClick(event: InventoryClickEvent) {
         val player = event.whoClicked as Player

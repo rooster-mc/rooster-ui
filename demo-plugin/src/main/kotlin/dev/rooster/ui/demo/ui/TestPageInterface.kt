@@ -10,15 +10,12 @@ object TestPageInterface : DefaultPageInterface() {
         click.player.sendMessage("test")
     }
 
-    override fun getPages(): List<Page<PageContext>> {
-        return pages {
+    override fun getPages(): List<Page<PageContext>> =
+        pages {
             page(0) {
                 add(test)
             }
         }
-    }
 
-    override fun defaultContext(player: Player): PageContext {
-        return PageContext(0)
-    }
+    override fun defaultContext(player: Player): PageContext = PageContext(0)
 }

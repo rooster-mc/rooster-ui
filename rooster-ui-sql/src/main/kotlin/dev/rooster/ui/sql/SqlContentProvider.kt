@@ -16,24 +16,26 @@ abstract class SqlContentProvider<ContextType : Context, DataType : Any>(
     val strategy: ContextStrategy<ContextType>,
     val cacheTtlSeconds: Long = 300,
 ) : ContentProvidable<ContextType, Int, DataType> {
-
-    private val cache: Cache<Pair<Int, Int>, Any> = CacheBuilder.newBuilder()
+    private val cache: Cache<Pair<Int, Int>, Any> = CacheBuilder
+        .newBuilder()
         .expireAfterWrite(cacheTtlSeconds, TimeUnit.SECONDS)
         .build()
 
-    protected fun cacheKey(id: Int, context: ContextType): Pair<Int, Int> =
-        id to strategy.keys(context).contentHashCode()
+    protected fun cacheKey(id: Int, context: ContextType): Pair<Int, Int> = id to strategy.keys(context).contentHashCode()
 
-    protected fun fetchRow(id: Int, context: ContextType): ResultRow? = transaction {
-        val query = table.selectAll().where { table.id eq id }
-        strategy.clause(context)?.let { query.andWhere { it } }
-        query.singleOrNull()
-    }
+    protected fun fetchRow(id: Int, context: ContextType): ResultRow? =
+        transaction {
+            val query = table.selectAll().where { table.id eq id }
+            strategy.clause(context)?.let { query.andWhere { it } }
+            query.singleOrNull()
+        }
 
     fun invalidate(id: Int, context: ContextType) = cache.invalidate(cacheKey(id, context))
+
     fun invalidateAll() = cache.invalidateAll()
 
     protected fun rawGet(key: Pair<Int, Int>): Any? = cache.getIfPresent(key)
+
     protected fun rawPut(key: Pair<Int, Int>, value: Any) = cache.put(key, value)
 }
 
@@ -43,7 +45,6 @@ class DirectSqlContentProvider<ContextType : Context, DataType : Any>(
     strategy: ContextStrategy<ContextType> = ContextStrategy.none(),
     cacheTtlSeconds: Long = 300,
 ) : SqlContentProvider<ContextType, DataType>(table, strategy, cacheTtlSeconds) {
-
     @Suppress("UNCHECKED_CAST")
     override fun contentProvider(id: Int, context: ContextType): DataType? {
         val key = cacheKey(id, context)
@@ -61,7 +62,6 @@ class IntermediateSqlContentProvider<ContextType : Context, IntermediateType : A
     strategy: ContextStrategy<ContextType> = ContextStrategy.none(),
     cacheTtlSeconds: Long = 300,
 ) : SqlContentProvider<ContextType, DataType>(table, strategy, cacheTtlSeconds) {
-
     @Suppress("UNCHECKED_CAST")
     override fun contentProvider(id: Int, context: ContextType): DataType? {
         val key = cacheKey(id, context)

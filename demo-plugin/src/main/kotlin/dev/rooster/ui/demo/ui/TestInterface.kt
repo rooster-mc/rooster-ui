@@ -1,9 +1,9 @@
 package dev.rooster.ui.demo.ui
 
 import dev.rooster.core.util.createItem
+import dev.rooster.ui.interfaces.Context
 import dev.rooster.ui.interfaces.constructors.NoContextInterface
 import dev.rooster.ui.items.InterfaceItem
-import dev.rooster.ui.interfaces.Context
 import org.bukkit.Material
 
 object TestInterface : NoContextInterface() {
@@ -11,7 +11,5 @@ object TestInterface : NoContextInterface() {
         click.player.sendMessage("test")
     }
 
-    override fun getInterfaceItems(): List<InterfaceItem<Context>> {
-        return listOf(test)
-    }
+    override fun getInterfaceItems(): List<InterfaceItem<Context>> = listOf(test)
 }

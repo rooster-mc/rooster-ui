@@ -20,8 +20,14 @@ class Slots {
     private constructor(mode: Mode) {
         this.slots = arrayOf(-1)
         when (mode) {
-            Mode.ALL -> this.all = true
-            Mode.PLAYER_INVENTORY -> this.playerInventory = true
+            Mode.ALL -> {
+                this.all = true
+            }
+
+            Mode.PLAYER_INVENTORY -> {
+                this.playerInventory = true
+            }
+
             Mode.EVERYTHING -> {
                 this.all = true
                 this.playerInventory = true

@@ -6,9 +6,9 @@ import dev.rooster.ui.context.InMemoryInterfaceContextProvider
 import dev.rooster.ui.demo.ui.TestInterface
 import dev.rooster.ui.demo.ui.TestPageInterface
 import dev.rooster.ui.demo.ui.TestScrollInterface
+import org.bukkit.event.inventory.ClickType
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
-import org.bukkit.event.inventory.ClickType
 import org.mockbukkit.mockbukkit.MockBukkit
 import org.mockbukkit.mockbukkit.ServerMock
 import org.mockbukkit.mockbukkit.entity.PlayerMock

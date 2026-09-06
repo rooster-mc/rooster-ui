@@ -28,6 +28,7 @@ abstract class RoosterInterface<T : Context>(
     val options: RoosterInterfaceOptions<T> = options { }
 ) : ContextHandler<T> by contextHandler {
     open val interfaceName: String = this.javaClass.name
+
     open class RoosterInterfaceOptions<T : Context> {
         /**
          * Automatically registers an [InterfaceItem] that covers every interface slot,
@@ -84,7 +85,10 @@ abstract class RoosterInterface<T : Context>(
                 requireNotNull(items) { "Slot somehow not included" }
                 items.get(info)
             }
-            InventoryRegion.PLAYER -> playerInventoryItems(info.player)?.get(info)
+
+            InventoryRegion.PLAYER -> {
+                playerInventoryItems(info.player)?.get(info)
+            }
         }
         if (target != null) action(target)
     }

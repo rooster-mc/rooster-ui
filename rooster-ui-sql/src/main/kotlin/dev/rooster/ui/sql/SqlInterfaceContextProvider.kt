@@ -34,18 +34,22 @@ class SqlInterfaceContextProvider : InterfaceContextProvider() {
         val content = text("content")
     }
 
-    class InterfaceContext(id: EntityID<Int>) : IntEntity(id) {
+    class InterfaceContext(
+        id: EntityID<Int>
+    ) : IntEntity(id) {
         companion object : IntEntityClass<InterfaceContext>(InterfaceContexts)
 
         val content by InterfaceContexts.content
     }
 
-    fun isTableInitialized(): Boolean = transaction {
-        currentDialect.tableExists(InterfaceContexts)
-    }
+    fun isTableInitialized(): Boolean =
+        transaction {
+            currentDialect.tableExists(InterfaceContexts)
+        }
 
     fun errorTableNotInitialized() {
-        RoosterUISql.logger.log(Level.SEVERE, "InterfaceContexts table not initialized. Likely you initialized this service before RoosterSql initialized the database.")
+        RoosterUISql.logger
+            .log(Level.SEVERE, "InterfaceContexts table not initialized. Likely you initialized this service before RoosterSql initialized the database.")
     }
 
     override fun <T : Context> updateContext(player: Player, interfaceInstance: RoosterInterface<T>, context: T) {
@@ -56,9 +60,12 @@ class SqlInterfaceContextProvider : InterfaceContextProvider() {
 
         val jsonContent = Gson().toJson(context)
         transaction {
-            val existingContext = InterfaceContexts.selectAll()
-                .where { (InterfaceContexts.playerUUID eq player.uuid()) and (InterfaceContexts.interfaceName eq interfaceInstance.interfaceName) }
-                .singleOrNull()
+            val existingContext = InterfaceContexts
+                .selectAll()
+                .where {
+                    (InterfaceContexts.playerUUID eq player.uuid()) and
+                        (InterfaceContexts.interfaceName eq interfaceInstance.interfaceName)
+                }.singleOrNull()
 
             if (existingContext != null) {
                 InterfaceContexts.update({ InterfaceContexts.id eq existingContext[InterfaceContexts.id] }) {
@@ -82,7 +89,7 @@ class SqlInterfaceContextProvider : InterfaceContextProvider() {
 
         val data = InterfaceContext.findEntry(
             (InterfaceContexts.playerUUID eq player.uuid()) and
-                    (InterfaceContexts.interfaceName eq interfaceInstance.interfaceName)
+                (InterfaceContexts.interfaceName eq interfaceInstance.interfaceName)
         ) ?: return null
 
         val gson = GsonBuilder().create()

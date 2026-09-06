@@ -26,26 +26,13 @@ object TestScrollInterface :
     )
     val list2 = list + list + list + list + list + list + list
 
-    override fun contentDisplay(
-        data: Entry,
-        context: ScrollContext
-    ): InterfaceInfo<ScrollContext>.() -> ItemStack {
-        return { createItem(data.material, data.name.toComponent()) }
-    }
+    override fun contentDisplay(data: Entry, context: ScrollContext): InterfaceInfo<ScrollContext>.() -> ItemStack =
+        { createItem(data.material, data.name.toComponent()) }
 
-    override fun contentClick(
-        data: Entry,
-        context: ScrollContext
-    ): ClickInfo<ScrollContext>.() -> Unit {
-        return { click.player.sendMessage(data.name) }
-    }
+    override fun contentClick(data: Entry, context: ScrollContext): ClickInfo<ScrollContext>.() -> Unit =
+        { click.player.sendMessage(data.name) }
 
-    override fun contentProvider(
-        id: Int,
-        context: ScrollContext
-    ): Entry? {
-        return list2.getOrNull(id)
-    }
+    override fun contentProvider(id: Int, context: ScrollContext): Entry? = list2.getOrNull(id)
 
     override fun getInterfaceItems(): List<InterfaceItem<ScrollContext>> = emptyList()
 }
