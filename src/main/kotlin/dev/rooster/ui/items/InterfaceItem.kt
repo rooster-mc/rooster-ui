@@ -31,10 +31,10 @@ class InterfaceItem<T : Context> {
     internal var onClick: (ClickInfo<T>.() -> Unit)? = null
     private var contextModifier: (ClickInfo<T>.() -> Unit)? = null
     private var routeToInterface: (ClickInfo<T>.() -> Unit)? = null
-    internal var cancelsClick: (ClickInfo<T>.() -> Boolean) = { true }
+    internal var locksClick: (ClickInfo<T>.() -> Boolean) = { true }
     internal val onClickMerged: (ClickInfo<T>.() -> Unit)
         get() = {
-            if (cancelsClick.invoke(this)) event.isCancelled = true
+            if (locksClick.invoke(this)) event.isCancelled = true
             onClick?.invoke(this)
             contextModifier?.invoke(this)
             routeToInterface?.invoke(this)
@@ -51,7 +51,7 @@ class InterfaceItem<T : Context> {
         val onClick get() = this@InterfaceItem.onClick
         val contextModifier get() = this@InterfaceItem.contextModifier
         val routeToInterface get() = this@InterfaceItem.routeToInterface
-        val cancelsClick get() = this@InterfaceItem.cancelsClick
+        val locksClick get() = this@InterfaceItem.locksClick
         val onClickMerged get() = this@InterfaceItem.onClickMerged
     }
 
@@ -113,14 +113,14 @@ class InterfaceItem<T : Context> {
     /** Does something when the item is clicked */
     fun onClick(action: ClickInfo<T>.() -> Unit): InterfaceItem<T> = copy { this.onClick = action }
 
-    /** Controls whether clicking this item cancels the underlying inventory event. Defaults to cancelling. */
-    fun cancelsClick(predicate: ClickInfo<T>.() -> Boolean): InterfaceItem<T> = copy { this.cancelsClick = predicate }
+    /** Controls whether clicking this item locks the slot (cancels the underlying inventory event). Defaults to locking. */
+    fun locksClick(predicate: ClickInfo<T>.() -> Boolean): InterfaceItem<T> = copy { this.locksClick = predicate }
 
-    /** Lets the click pass through to vanilla behaviour (the event is not cancelled). */
-    fun interactive(): InterfaceItem<T> = copy { this.cancelsClick = { false } }
+    /** Unlocks the slot so clicks pass through to vanilla behaviour (the event is not cancelled). */
+    fun unlocked(): InterfaceItem<T> = copy { this.locksClick = { false } }
 
-    /** Lets the click pass through whenever [predicate] holds. */
-    fun interactiveWhen(predicate: ClickInfo<T>.() -> Boolean): InterfaceItem<T> = copy { this.cancelsClick = { !predicate() } }
+    /** Unlocks the slot so clicks pass through to vanilla behaviour whenever [predicate] holds. */
+    fun unlockedWhen(predicate: ClickInfo<T>.() -> Boolean): InterfaceItem<T> = copy { this.locksClick = { !predicate() } }
 
     /** Modifies the context of the click info when the item is clicked, and opens the inventory with the modified context by default */
     fun modifyContext(openInventory: Boolean = true, action: ClickInfo<T>.() -> Unit): InterfaceItem<T> =
@@ -173,7 +173,7 @@ class InterfaceItem<T : Context> {
             it.condition = condition.copy()
             it.displayItem = displayItem
             it.onClick = onClick
-            it.cancelsClick = cancelsClick
+            it.locksClick = locksClick
             it.priority = priority
             it.staticPriority = staticPriority
             it.slots = slots

@@ -23,16 +23,13 @@ abstract class IndexedContentInterface<ContextType : Context, IdType : Any, Data
     ContentProvidable<ContextType, IdType, DataType> {
     open class IndexedContentOptions<T : Context> : RoosterInterfaceOptions<T>() {
         var contentArea: ContentArea = ContentArea.fromRows(UIConstants.INVENTORY_MAX_ROWS - 1)
-
-        var modifyContentItem: InterfaceItem<T>.() -> InterfaceItem<T> = { this }
-        var modifyClickInArea: InterfaceItem<T>.() -> InterfaceItem<T> = { this }
     }
 
     val indexedContentOptions = super.options as IndexedContentOptions<ContextType>
     val contentArea get() = indexedContentOptions.contentArea
 
-    private val contentItem
-        get() = item()
+    protected open fun contentItem(): InterfaceItem<ContextType> =
+        item()
             .atSlots(contentArea.allValidSlots())
             .usedWhen {
                 val data = dataFromPosition(slot, context, player)
@@ -45,8 +42,8 @@ abstract class IndexedContentInterface<ContextType : Context, IdType : Any, Data
                 contentClick(data, context).invoke(this)
             }
 
-    private val clickInArea
-        get() = item()
+    protected open fun clickInAreaItem(): InterfaceItem<ContextType> =
+        item()
             .atSlots(contentArea.allValidSlots())
             .usedWhen {
                 val dataExists = dataFromPosition(slot, context, player) != null
@@ -57,8 +54,8 @@ abstract class IndexedContentInterface<ContextType : Context, IdType : Any, Data
 
     init {
         addItems {
-            add(indexedContentOptions.modifyContentItem(contentItem))
-            add(indexedContentOptions.modifyClickInArea(clickInArea))
+            add(contentItem())
+            add(clickInAreaItem())
         }
     }
 
