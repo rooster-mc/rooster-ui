@@ -26,13 +26,15 @@ class InterfaceItem<T : Context> {
     internal var priority: (InterfaceInfo<T>.() -> Int) = { 0 }
     internal var staticPriority: Int? = null
 
-    internal var displayItem: (InterfaceInfo<T>.() -> ItemStack) = { createItem(Material.AIR) }
+    internal var displayItem: (InterfaceInfo<T>.() -> ItemStack)? = { createItem(Material.AIR) }
 
     internal var onClick: (ClickInfo<T>.() -> Unit)? = null
     private var contextModifier: (ClickInfo<T>.() -> Unit)? = null
     private var routeToInterface: (ClickInfo<T>.() -> Unit)? = null
+    internal var cancelsClick: (ClickInfo<T>.() -> Boolean) = { true }
     internal val onClickMerged: (ClickInfo<T>.() -> Unit)
         get() = {
+            if (cancelsClick.invoke(this)) event.isCancelled = true
             onClick?.invoke(this)
             contextModifier?.invoke(this)
             routeToInterface?.invoke(this)
@@ -49,6 +51,7 @@ class InterfaceItem<T : Context> {
         val onClick get() = this@InterfaceItem.onClick
         val contextModifier get() = this@InterfaceItem.contextModifier
         val routeToInterface get() = this@InterfaceItem.routeToInterface
+        val cancelsClick get() = this@InterfaceItem.cancelsClick
         val onClickMerged get() = this@InterfaceItem.onClickMerged
     }
 
@@ -80,6 +83,10 @@ class InterfaceItem<T : Context> {
 
     fun forAllSlots() = copy { this.slots = Slots.all() }
 
+    fun forPlayerInventory() = copy { this.slots = Slots.playerInventory() }
+
+    fun forEverything() = copy { this.slots = Slots.everything() }
+
     fun resetConditions(excludingConditionKeys: List<String>) =
         copy {
             this.condition.resetConditions(excludingConditionKeys)
@@ -99,6 +106,15 @@ class InterfaceItem<T : Context> {
 
     /** Does something when the item is clicked */
     fun onClick(action: ClickInfo<T>.() -> Unit): InterfaceItem<T> = copy { this.onClick = action }
+
+    /** Controls whether clicking this item cancels the underlying inventory event. Defaults to cancelling. */
+    fun cancelsClick(predicate: ClickInfo<T>.() -> Boolean): InterfaceItem<T> = copy { this.cancelsClick = predicate }
+
+    /** Lets the click pass through to vanilla behaviour (the event is not cancelled). */
+    fun interactive(): InterfaceItem<T> = copy { this.cancelsClick = { false } }
+
+    /** Lets the click pass through whenever [predicate] holds. */
+    fun interactiveWhen(predicate: ClickInfo<T>.() -> Boolean): InterfaceItem<T> = copy { this.cancelsClick = { !predicate() } }
 
     /** Modifies the context of the click info when the item is clicked, and opens the inventory with the modified context by default */
     fun modifyContext(openInventory: Boolean = true, action: ClickInfo<T>.() -> Unit): InterfaceItem<T> =
@@ -135,6 +151,9 @@ class InterfaceItem<T : Context> {
 
     fun displayAs(itemStack: ItemStack): InterfaceItem<T> = copy { this.displayItem = { itemStack } }
 
+    /** Renders nothing at the slot, leaving whatever item was already there untouched. */
+    fun leavesSlotUntouched(): InterfaceItem<T> = copy { this.displayItem = null }
+
     fun displayAs(
         material: Material,
         name: Message,
@@ -148,6 +167,7 @@ class InterfaceItem<T : Context> {
             it.condition = condition.copy()
             it.displayItem = displayItem
             it.onClick = onClick
+            it.cancelsClick = cancelsClick
             it.priority = priority
             it.staticPriority = staticPriority
             it.slots = slots

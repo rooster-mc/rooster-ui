@@ -7,7 +7,6 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.PlayerInventory
 
 internal object InterfaceManager {
     fun closeInterface(player: Player, event: InventoryCloseEvent) {
@@ -43,7 +42,7 @@ internal object InterfaceManager {
         for (slot in 0 until inventory.size) {
             val info = InterfaceInfo(slot, context, player)
             targetInventory.forVisibleItem(info) {
-                inventory.setItem(slot, it.displayItem(info))
+                it.displayItem?.invoke(info)?.let { display -> inventory.setItem(slot, display) }
             }
         }
         return inventory
@@ -57,19 +56,15 @@ internal object InterfaceManager {
 
         val targetInterface = currentInterface(player) ?: return
 
-        if (event.currentItem == null && targetInterface.options.ignoreEmptySlots) return
-        if (event.clickedInventory is PlayerInventory && targetInterface.options.ignorePlayerInventory) return
-
         val click = Click(event, player, event.currentItem, event.currentItem?.type, event.slot)
 
         @Suppress("UNCHECKED_CAST")
         val typedInterface = targetInterface as RoosterInterface<Context>
 
         val context = typedInterface.getContext(player)
-        val info = InterfaceInfo(click.slot, context, click.player)
+        val info = InterfaceInfo(click.slot, context, click.player, click.region)
 
         val clickInfo = ClickInfo(click, context, event, targetInterface)
-        if (typedInterface.options.cancelEvent(clickInfo)) event.isCancelled = true
 
         typedInterface.forVisibleItem(info) { it.onClickMerged(clickInfo) }
     }

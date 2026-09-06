@@ -5,14 +5,21 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.PlayerInventory
 import kotlin.reflect.KClass
 
 typealias Slot = Int
 
+enum class InventoryRegion {
+    INTERFACE,
+    PLAYER
+}
+
 data class InterfaceInfo<T : Context>(
     val slot: Slot,
     val context: T,
-    val player: Player
+    val player: Player,
+    val region: InventoryRegion = InventoryRegion.INTERFACE
 )
 
 data class ClickInfo<T : Context>(
@@ -31,6 +38,9 @@ data class Click(
 ) {
     @Suppress("unused")
     val isEmpty = lazy { item != null }
+
+    val region: InventoryRegion
+        get() = if (event.clickedInventory is PlayerInventory) InventoryRegion.PLAYER else InventoryRegion.INTERFACE
 }
 
 /**

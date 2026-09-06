@@ -5,6 +5,7 @@ import dev.rooster.ui.UIConstants
 import dev.rooster.ui.items.InterfaceItem
 import dev.rooster.ui.items.InterfaceItemList
 import dev.rooster.ui.items.targetsNullableSlot
+import dev.rooster.ui.items.targetsPlayerInventory
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -28,10 +29,13 @@ abstract class RoosterInterface<T : Context>(
 ) : ContextHandler<T> by contextHandler {
     open val interfaceName: String = this.javaClass.name
     open class RoosterInterfaceOptions<T : Context> {
-        // Click behaviour
-        var cancelEvent: (ClickInfo<T>) -> Boolean = { true }
-        var ignorePlayerInventory: Boolean = true
-        var ignoreEmptySlots: Boolean = true
+        /**
+         * Automatically registers an [InterfaceItem] that covers every interface slot,
+         * renders nothing and cancels any click on it. This guards the interface against
+         * unintended interaction by default. Set to false to disable it and handle
+         * interaction entirely through your own items.
+         */
+        var protectInteraction: Boolean = true
 
         // Inventory-Creator
         var inventorySize: InventorySize = InventorySize.SIX_ROWS
@@ -39,6 +43,18 @@ abstract class RoosterInterface<T : Context>(
     }
 
     private val _itemBlocks = mutableListOf<MutableList<InterfaceItem<T>>.() -> Unit>()
+
+    private val interactionGuard
+        get() = item()
+            .forAllSlots()
+            .leavesSlotUntouched()
+            .priority(Int.MIN_VALUE)
+
+    init {
+        if (options.protectInteraction) {
+            addItems { add(interactionGuard) }
+        }
+    }
 
     protected fun addItems(block: MutableList<InterfaceItem<T>>.() -> Unit) {
         _itemBlocks += block
@@ -62,9 +78,14 @@ abstract class RoosterInterface<T : Context>(
     open fun onClose(player: Player, context: T, event: InventoryCloseEvent) {}
 
     internal fun forVisibleItem(info: InterfaceInfo<T>, action: (InterfaceItem<T>) -> Unit) {
-        val items = groupedItems(info.player)[info.slot]
-        requireNotNull(items) { "Slot somehow not included" }
-        val target = items.get(info)
+        val target = when (info.region) {
+            InventoryRegion.INTERFACE -> {
+                val items = groupedItems(info.player)[info.slot]
+                requireNotNull(items) { "Slot somehow not included" }
+                items.get(info)
+            }
+            InventoryRegion.PLAYER -> playerInventoryItems(info.player)?.get(info)
+        }
         if (target != null) action(target)
     }
 
@@ -77,6 +98,12 @@ abstract class RoosterInterface<T : Context>(
     fun getCurrentContext(player: Player): T? = interfaceContextProvider.getContext(player, this)
 
     val groupedItems = emptyMap<Player, Map<Slot, InterfaceItemList<T>>>().toMutableMap()
+
+    internal fun playerInventoryItems(player: Player): InterfaceItemList<T>? {
+        val playerItems = items.filter { it.slots.targetsPlayerInventory() }
+        if (playerItems.isEmpty()) return null
+        return InterfaceItemList(playerItems)
+    }
 
     internal fun groupedItems(player: Player): Map<Slot, InterfaceItemList<T>> {
         val cachedItems = groupedItems[player]
