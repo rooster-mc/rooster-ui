@@ -49,7 +49,7 @@ abstract class RoosterInterface<T : Context>(
         get() = item()
             .forAllSlots()
             .leavesSlotUntouched()
-            .priority(Int.MIN_VALUE)
+            .asFallback()
 
     init {
         if (options.protectInteraction) {

@@ -104,6 +104,12 @@ class InterfaceItem<T : Context> {
             this.staticPriority = priority
         }
 
+    /** Lowest possible priority; this item only applies when nothing else matches. */
+    fun asFallback(): InterfaceItem<T> = priority(Int.MIN_VALUE)
+
+    /** Highest possible priority; this item always wins over every other item. */
+    fun aboveAll(): InterfaceItem<T> = priority(Int.MAX_VALUE)
+
     /** Does something when the item is clicked */
     fun onClick(action: ClickInfo<T>.() -> Unit): InterfaceItem<T> = copy { this.onClick = action }
 
